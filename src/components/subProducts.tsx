@@ -2,59 +2,63 @@ import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet, ScrollView} from 'react-native';
 import AddToCartCard from './addToCart';
 import {Button} from 'react-native-paper';
+import Layout from './layOut';
 const SubProductList = ({navigation}: {navigation: any}) => {
   const dummyItem = {productName: '90 degree elbow', price: '$25'};
   const items = ['90 degree elbow', '45 degree elbow', '120 degree elbow'];
   const [showAddCart, setshowAddCart] = useState<boolean>(false);
   const [selectedItem, setselectedItem] = useState<number | null>(null);
-
+  const handleNavigation = () => {
+    navigation.navigate('home');
+  };
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.headline}>Products</Text>
-
-        {items.map((item, index) => (
-          <Pressable key={index}>
-            {index === selectedItem ? (
-              <AddToCartCard item={dummyItem} />
-            ) : (
-              <View
-                onTouchEnd={() => {
-                  setselectedItem(index);
-                  console.log('touching');
-                }}
-                style={styles.item}>
-                <Text style={styles.text}>{item}</Text>
-              </View>
-            )}
-          </Pressable>
-        ))}
-        <View
-          style={{
-            marginTop: 10,
-            alignSelf: 'flex-end',
-            display: 'flex',
-            flexDirection: 'column',
-          }}>
-          <Button
-            style={{justifyContent: 'space-between', marginBottom: 20}}
-            mode="contained"
-            onPress={() => {
-              navigation.navigate('cart');
+    <Layout headerText="Products" navigation={handleNavigation}>
+      <ScrollView>
+        <View style={styles.container}>
+          {items.map((item, index) => (
+            <Pressable key={index}>
+              {index === selectedItem ? (
+                <AddToCartCard item={dummyItem} />
+              ) : (
+                <View
+                  onTouchEnd={() => {
+                    setselectedItem(index);
+                    console.log('touching');
+                  }}
+                  style={styles.item}>
+                  <Text style={styles.text}>{item}</Text>
+                </View>
+              )}
+            </Pressable>
+          ))}
+          <View
+            style={{
+              marginTop: 10,
+              alignSelf: 'flex-end',
+              display: 'flex',
+              flexDirection: 'column',
+              marginRight: 20,
             }}>
-            {'Checkout'}
-          </Button>
-          <Button
-            onPress={() => {
-              navigation.navigate('home');
-            }}
-            style={{justifyContent: 'space-between'}}
-            mode="outlined">
-            {'Add more items'}
-          </Button>
+            <Button
+              style={{justifyContent: 'space-between', marginBottom: 20}}
+              mode="contained"
+              onPress={() => {
+                navigation.navigate('cart');
+              }}>
+              {'Checkout'}
+            </Button>
+            <Button
+              onPress={() => {
+                navigation.navigate('home');
+              }}
+              style={{justifyContent: 'space-between'}}
+              mode="outlined">
+              {'Add more items'}
+            </Button>
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </Layout>
   );
 };
 

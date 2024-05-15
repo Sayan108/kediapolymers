@@ -86,22 +86,23 @@ const CartItem = (props: any) => {
           </TouchableOpacity>
         )}
         <View style={styles.counterContainer}>
-          <TouchableOpacity
-            onPress={handleDecrement}
-            style={styles.counterButton}>
-            <Text style={styles.counterText}>-</Text>
-          </TouchableOpacity>
           <TextInput
             value={quantity.toString()}
             onChangeText={handleQuantityChange}
             keyboardType="numeric"
             style={styles.counterInput}
           />
+          {/* <TouchableOpacity
+            onPress={handleDecrement}
+            style={styles.counterButton}>
+            <Text style={styles.counterText}>-</Text>
+          </TouchableOpacity>
+         
           <TouchableOpacity
             onPress={handleIncrement}
             style={styles.counterButton}>
             <Text style={styles.counterText}>+</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
       <Text style={styles.price}>{item?.price ?? '$10'}</Text>

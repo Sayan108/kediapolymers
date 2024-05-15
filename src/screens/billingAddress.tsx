@@ -13,7 +13,7 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
     navigation.navigate('cart');
   };
   return (
-    <Layout navigation={handleNavigation} headerText="Add an appoinment">
+    <Layout navigation={handleNavigation} headerText="Add billing address">
       <ScrollView>
         <TextInput
           maxLength={50}

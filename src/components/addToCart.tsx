@@ -83,22 +83,23 @@ const AddToCartCard = (props: any) => {
           </TouchableOpacity>
         )}
         <View style={styles.counterContainer}>
-          <TouchableOpacity
-            onPress={handleDecrement}
-            style={styles.counterButton}>
-            <Text style={styles.counterText}>-</Text>
-          </TouchableOpacity>
           <TextInput
             value={quantity.toString()}
             onChangeText={handleQuantityChange}
             keyboardType="numeric"
             style={styles.counterInput}
           />
+          {/* <TouchableOpacity
+            onPress={handleDecrement}
+            style={styles.counterButton}>
+            <Text style={styles.counterText}>-</Text>
+          </TouchableOpacity>
+        
           <TouchableOpacity
             onPress={handleIncrement}
             style={styles.counterButton}>
             <Text style={styles.counterText}>+</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
       <Text style={styles.price}>{item?.price ?? '$10'}</Text>
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     width: '40%',
-    height: 'auto',
+    height: 45,
   },
   dropdownText: {
     color: 'black',
@@ -208,6 +209,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 10,
+    paddingRight: 20,
     alignSelf: 'flex-end',
   },
 });
