@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {RadioButton, TextInput, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {ScrollView} from 'react-native';
 
-const AddToCartCard = (props: any) => {
+const CartItem = (props: any) => {
   const dropdown = [
     '10 cm',
     '20 cm',
@@ -41,6 +41,9 @@ const AddToCartCard = (props: any) => {
       setQuantity(0);
     }
   };
+  useEffect(() => {
+    setQuantity(parseInt(item.quantity ?? 1));
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -102,24 +105,19 @@ const AddToCartCard = (props: any) => {
         </View>
       </View>
       <Text style={styles.price}>{item?.price ?? '$10'}</Text>
-      <View style={styles.buttonContainer}>
-        <Button mode="contained" onPress={() => console.log('Button Pressed')}>
-          Add to Cart
-        </Button>
-      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    padding: 5,
     borderRadius: 10,
-    padding: 20,
-    marginBottom: 20,
+    borderBottomColor: 'gray',
+    borderWidth: 1,
     borderColor: 'black',
     width: 348,
-    borderWidth: 1,
-    backgroundColor: 'rgba(103, 80, 164,0.1)',
+    marginBottom: 15,
   },
   rowContainer: {
     flexDirection: 'row',
@@ -212,4 +210,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddToCartCard;
+export default CartItem;
