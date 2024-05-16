@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DataTable} from 'react-native-paper';
+import {Button, DataTable} from 'react-native-paper';
 import GeneratePDF from '../components/generatePdf';
 import Layout from '../components/layOut';
 
@@ -39,7 +39,15 @@ const TableExample = ({navigation}: {navigation: any}) => {
             <DataTable.Cell>24</DataTable.Cell>
           </DataTable.Row>
         </DataTable>
-        <GeneratePDF />
+        <View style={{padding: 15}}>
+          <Button
+            mode={'contained'}
+            onPress={() => {
+              navigation.navigate('home');
+            }}>
+            {'Generate invoice'}
+          </Button>
+        </View>
       </View>
     </Layout>
   );

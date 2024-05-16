@@ -1,8 +1,17 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 import ListWithIcons, {Item} from './listWithIcons';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../redux';
+import {
+  updateCurrentCart,
+  updateCurrentCategory,
+} from '../../redux/silces/cart.slice';
+import {ICart} from '../../redux/redux.constants';
 
 const HomePageComponent = ({navigation}: {navigation: any}) => {
+  const {currentCart} = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
   const [searchText, setSearchText] = useState('');
 
   const items: Item[] = [
@@ -13,6 +22,22 @@ const HomePageComponent = ({navigation}: {navigation: any}) => {
     {id: 5, text: 'Drain pro', iconName: 'build'},
     {id: 6, text: 'Foam core', iconName: 'camera'},
   ];
+
+  const handleButtonClick = (item: Item) => {
+    console.log(item);
+    dispatch(updateCurrentCategory(item.text));
+    if (currentCart.items.length === 0) {
+      const cartItem: ICart = {
+        id: (Math.random() * 1000000).toString(),
+        totalAmount: '0',
+        items: [],
+      };
+
+      dispatch(updateCurrentCart(cartItem));
+    }
+
+    navigation.navigate('subproduct');
+  };
 
   // Filter items based on search text
 
@@ -32,7 +57,11 @@ const HomePageComponent = ({navigation}: {navigation: any}) => {
           Categories
         </Text>
       </View>
-      <ListWithIcons items={items} navigation={navigation} />
+      <ListWithIcons
+        items={items}
+        navigation={navigation}
+        handleClick={handleButtonClick}
+      />
     </View>
   );
 };

@@ -1,8 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+  Pressable,
+} from 'react-native';
 import {RadioButton, TextInput, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {ScrollView} from 'react-native';
 
 const CartItem = (props: any) => {
   const dropdown = [
@@ -22,7 +28,9 @@ const CartItem = (props: any) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [selectedItem, setSelectedItem] = useState('');
 
-  console.log(item);
+  useEffect(() => {
+    setQuantity(parseInt(item.quantity ?? 1));
+  }, [item.quantity]);
 
   const handleIncrement = () => {
     setQuantity((prevQuantity: any) => prevQuantity + 1);
@@ -41,9 +49,6 @@ const CartItem = (props: any) => {
       setQuantity(0);
     }
   };
-  useEffect(() => {
-    setQuantity(parseInt(item.quantity ?? 1));
-  }, []);
 
   return (
     <View style={styles.container}>
@@ -56,35 +61,13 @@ const CartItem = (props: any) => {
         </Text>
       </View>
       <View style={styles.rowContainer}>
-        {showDropDown ? (
-          <View style={styles.dropdownList}>
-            <RadioButton.Group
-              onValueChange={newValue => {
-                setSelectedItem(newValue);
-                setShowDropDown(false);
-              }}
-              value={selectedItem}>
-              {dropdown?.map((item, index) => (
-                <View key={index} style={styles.dropdownItem}>
-                  <RadioButton value={item} color={'black'} />
-                  <Text style={styles.dropdownItemText}>{item}</Text>
-                </View>
-              ))}
-            </RadioButton.Group>
-          </View>
-        ) : (
-          <TouchableOpacity
-            style={styles.dropdownContainer}
-            onPress={() => {
-              setShowDropDown(!showDropDown);
-            }}>
-            <Button>
-              <Text style={styles.dropdownText}>
-                {selectedItem || 'Choose dimension'}
-              </Text>
-            </Button>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.dropdownContainer}
+          onPress={() => setShowDropDown(true)}>
+          <Text style={styles.dropdownText}>
+            {selectedItem || 'Choose dimension'}
+          </Text>
+        </TouchableOpacity>
         <View style={styles.counterContainer}>
           <TextInput
             value={quantity.toString()}
@@ -92,20 +75,41 @@ const CartItem = (props: any) => {
             keyboardType="numeric"
             style={styles.counterInput}
           />
-          {/* <TouchableOpacity
-            onPress={handleDecrement}
-            style={styles.counterButton}>
+          {/* Uncomment if you want to use increment/decrement buttons */}
+          {/* <TouchableOpacity onPress={handleDecrement} style={styles.counterButton}>
             <Text style={styles.counterText}>-</Text>
           </TouchableOpacity>
-         
-          <TouchableOpacity
-            onPress={handleIncrement}
-            style={styles.counterButton}>
+          <TouchableOpacity onPress={handleIncrement} style={styles.counterButton}>
             <Text style={styles.counterText}>+</Text>
           </TouchableOpacity> */}
         </View>
       </View>
       <Text style={styles.price}>{item?.price ?? '$10'}</Text>
+
+      <Modal
+        transparent={true}
+        visible={showDropDown}
+        onRequestClose={() => setShowDropDown(false)}>
+        <Pressable
+          style={styles.modalOverlay}
+          onPress={() => setShowDropDown(false)}>
+          <View style={styles.modalContainer}>
+            <RadioButton.Group
+              onValueChange={newValue => {
+                setSelectedItem(newValue);
+                setShowDropDown(false);
+              }}
+              value={selectedItem}>
+              {dropdown.map((dropdownItem, index) => (
+                <View key={index} style={styles.dropdownItem}>
+                  <RadioButton value={dropdownItem} color={'black'} />
+                  <Text style={styles.dropdownItemText}>{dropdownItem}</Text>
+                </View>
+              ))}
+            </RadioButton.Group>
+          </View>
+        </Pressable>
+      </Modal>
     </View>
   );
 };
@@ -140,21 +144,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 15,
     justifyContent: 'center',
-    width: '40%',
-    height: 'auto',
+    height: 45,
+    paddingHorizontal: 10,
   },
   dropdownText: {
     color: 'black',
     textAlign: 'center',
   },
-
   counterText: {
     fontSize: 24,
     justifyContent: 'space-between',
     color: 'black',
     alignSelf: 'center',
   },
-
   counterContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -162,52 +164,45 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 15,
     overflow: 'hidden',
-    width: '40%', // Align with the dropdown width
-    height: 45, // Match the height with the dropdown
+    width: '40%',
+    height: 45,
   },
   counterButton: {
-    width: 45, // Ensure button is wide enough for touch interaction
-    justifyContent: 'space-between',
+    width: 45,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   counterInput: {
-    flex: 20000,
-    justifyContent: 'space-between',
+    flex: 1,
     textAlign: 'center',
     fontSize: 18,
     paddingVertical: 6,
-  },
-
-  dropdownList: {
-    position: 'relative',
-    top: 30,
-    width: '60%',
-    height: '100%',
-    backgroundColor: 'rgba(103, 80, 164,0.25)',
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
-    zIndex: 1000,
-    color: 'rgba(103, 80, 164,1)',
-  },
-  dropdownItem: {
-    color: 'rgba(103, 80, 164,1)',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 5,
-  },
-  dropdownItemText: {
-    marginLeft: 8,
-    color: 'black',
   },
   price: {
     fontSize: 16,
     color: 'black',
     marginTop: 10,
   },
-  buttonContainer: {
-    marginTop: 10,
-    alignSelf: 'flex-end',
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+  },
+  dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  dropdownItemText: {
+    marginLeft: 8,
+    color: 'black',
   },
 });
 

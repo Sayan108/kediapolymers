@@ -11,14 +11,16 @@ export interface Item {
 interface Props {
   items: Item[];
   navigation?: any;
+  handleClick?: any;
 }
 
-const ListItem: React.FC<{item: Item; navigation: any}> = ({
-  item,
-  navigation,
-}) => (
+const ListItem: React.FC<{
+  item: Item;
+  navigation: any;
+  handleButtonClick: any;
+}> = ({item, navigation, handleButtonClick}) => (
   <View style={styles.itemContainer}>
-    <Pressable onPress={() => navigation.navigate('subproduct')}>
+    <Pressable onPress={() => handleButtonClick(item)}>
       <View style={styles.item}>
         <Icon name={item.iconName} size={24} color="black" />
         <Text style={styles.text}>{item.text}</Text>
@@ -27,10 +29,15 @@ const ListItem: React.FC<{item: Item; navigation: any}> = ({
   </View>
 );
 
-const ListWithIcons: React.FC<Props> = ({items, navigation}) => (
+const ListWithIcons: React.FC<Props> = ({items, navigation, handleClick}) => (
   <View style={styles.container}>
     {items.map(item => (
-      <ListItem key={item.id} item={item} navigation={navigation} />
+      <ListItem
+        key={item.id}
+        item={item}
+        navigation={navigation}
+        handleButtonClick={handleClick}
+      />
     ))}
   </View>
 );

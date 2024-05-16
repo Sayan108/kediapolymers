@@ -3,6 +3,7 @@ import {BottomNavigation, TouchableRipple} from 'react-native-paper';
 
 import {StyleSheet, Text, View} from 'react-native';
 import HomePageComponent from '../components/homePageComponent';
+import Cartpage from './cartPage';
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
   const [index, setIndex] = React.useState(0);
@@ -12,11 +13,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
   };
   const homePageRoute = () => <HomePageComponent navigation={navigation} />;
 
-  const CartPage = () => (
-    <View>
-      <Text style={{color: 'black'}}>cart</Text>
-    </View>
-  );
+  const cartPageRoute = () => <Cartpage navigation={navigation} />;
   const OrdersPage = () => (
     <View>
       <Text style={{color: 'black'}}>order</Text>
@@ -46,7 +43,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
 
   const renderScene = BottomNavigation.SceneMap({
     home: homePageRoute,
-    cart: CartPage,
+    cart: cartPageRoute,
     orders: OrdersPage,
   });
 

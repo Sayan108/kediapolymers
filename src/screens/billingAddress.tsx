@@ -5,10 +5,12 @@ import {TextInput, Button, Text, RadioButton} from 'react-native-paper';
 import HelperText from '../components/helperText';
 
 import Layout from '../components/layOut';
+import {useDispatch} from 'react-redux';
+import {clearCart} from '../redux/silces/cart.slice';
 
 const AddBillingAddress = ({navigation}: {navigation: any}) => {
   const [appointmentDetails, setAppointmentDetails] = useState<any>({});
-
+  const dispatch = useDispatch();
   const handleNavigation = () => {
     navigation.navigate('cart');
   };
@@ -187,6 +189,7 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
           mode="contained"
           onPress={() => {
             navigation.navigate('billingscreen');
+            dispatch(clearCart());
           }}
           style={styles.button}
           labelStyle={styles.buttonLabel}>
