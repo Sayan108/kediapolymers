@@ -22,12 +22,15 @@ export const cartSlice = createSlice({
       };
     },
 
-    updateCurrentCart: (state: ICartState, action: PayloadAction<any>) => {
+    updateCurrentCart: (
+      state: ICartState,
+      action: PayloadAction<ICartItem>,
+    ) => {
       return {
         ...state,
         currentCart: {
           ...state.currentCart,
-          items: [action.payload.newItem, ...state?.currentCart?.items],
+          items: [action.payload, ...state?.currentCart?.items],
         },
       };
     },
