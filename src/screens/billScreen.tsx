@@ -9,7 +9,7 @@ const TableExample = ({navigation}: {navigation: any}) => {
     navigation.navigate('billingaddress');
   };
   return (
-    <Layout headerText="Order confirm" navigation={handleNavigation}>
+    <Layout headerText="Order details" navigation={handleNavigation}>
       <View>
         <DataTable style={styles.container}>
           <DataTable.Header style={styles.tableHeader}>

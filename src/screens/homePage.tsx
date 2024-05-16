@@ -4,6 +4,7 @@ import {BottomNavigation, TouchableRipple} from 'react-native-paper';
 import {StyleSheet, Text, View} from 'react-native';
 import HomePageComponent from '../components/homePageComponent';
 import Cartpage from './cartPage';
+import Orderscreen from './orderSccreen';
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
   const [index, setIndex] = React.useState(0);
@@ -15,9 +16,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
 
   const cartPageRoute = () => <Cartpage navigation={navigation} />;
   const OrdersPage = () => (
-    <View>
-      <Text style={{color: 'black'}}>order</Text>
-    </View>
+    <Orderscreen navigation={navigation} handleBack={handleIndexChange} />
   );
 
   const [routes] = React.useState([
