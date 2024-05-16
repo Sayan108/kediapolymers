@@ -5,6 +5,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import HomePageComponent from '../components/homePageComponent';
 import Cartpage from './cartPage';
 import Orderscreen from './orderSccreen';
+import Cartscreen from './cartScreen';
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
   const [index, setIndex] = React.useState(0);
@@ -14,7 +15,9 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
   };
   const homePageRoute = () => <HomePageComponent navigation={navigation} />;
 
-  const cartPageRoute = () => <Cartpage navigation={navigation} />;
+  const cartPageRoute = () => (
+    <Cartscreen navigation={navigation} handleBack={handleIndexChange} />
+  );
   const OrdersPage = () => (
     <Orderscreen navigation={navigation} handleBack={handleIndexChange} />
   );
