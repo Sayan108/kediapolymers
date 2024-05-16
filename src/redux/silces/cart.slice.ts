@@ -27,28 +27,40 @@ export const cartSlice = createSlice({
         ...state,
         currentCart: {
           ...state.currentCart,
-          items: [action.payload.newItem, ...state.currentCart.items],
+          items: [action.payload.newItem, ...state?.currentCart?.items],
         },
+      };
+    },
+
+    addNewCartInList: (state: ICartState, action: PayloadAction<ICart>) => {
+      return {
+        ...state,
+        cartList: [action.payload, ...state.cartList],
       };
     },
 
     setCurrentCart: (state: ICartState, action: PayloadAction<ICart>) => {
+      const initialCart = {
+        id: '',
+        totalAmount: '0',
+        items: [],
+      };
+      const newItems = state.cartList.find(
+        cart => cart.id === action.payload.id,
+      );
       return {
         ...state,
-        currentCart: action.payload,
+        currentCart: newItems ?? initialCart,
       };
     },
 
     removeCartItem: (state: ICartState, action: PayloadAction<ICartItem>) => {
-      const newItems = state.currentCart.items.filter(
+      const newItems = state.cartList.filter(
         cart => cart.id !== action.payload.id,
       );
       return {
         ...state,
-        currentCart: {
-          ...state.currentCart,
-          items: newItems,
-        },
+        cartList: newItems,
       };
     },
 
@@ -62,7 +74,7 @@ export const cartSlice = createSlice({
 export const {
   updateCurrentCart,
   updateCurrentCategory,
-
+  addNewCartInList,
   removeCartItem,
   setCurrentCart,
   clearCart,

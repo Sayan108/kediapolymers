@@ -52,13 +52,13 @@ export interface ICartItem {
 
 export interface ICartState {
   currentCategory: string;
-
+  cartList: ICart[];
   currentCart: ICart;
 }
 
 export const cartInitialState: ICartState = {
   currentCategory: '',
-
+  cartList: [],
   currentCart: {
     id: '',
     totalAmount: '0',
