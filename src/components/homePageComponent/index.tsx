@@ -4,38 +4,40 @@ import ListWithIcons, {Item} from './listWithIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux';
 import {
-  updateCurrentCart,
+  addNewCartInList,
+  setCurrentCart,
   updateCurrentCategory,
 } from '../../redux/silces/cart.slice';
-import {ICart} from '../../redux/redux.constants';
+import {ICart, ICartItem} from '../../redux/redux.constants';
+import {genetateUUID} from '../../redux/utils';
 
 const HomePageComponent = ({navigation}: {navigation: any}) => {
+  const {cartList} = useSelector((state: RootState) => state.cart);
   const {currentCart} = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState('');
 
   const items: Item[] = [
     {id: 1, text: 'Agriculture', iconName: 'accessibility'},
-    {id: 2, text: 'CPVC Pro', iconName: 'alarm'},
-    {id: 3, text: 'Foam core', iconName: 'alarm'},
-    {id: 4, text: 'Drain pro', iconName: 'build'},
-    {id: 5, text: 'Drain pro', iconName: 'build'},
-    {id: 6, text: 'Foam core', iconName: 'camera'},
+    {id: 2, text: 'CPVCPro', iconName: 'alarm'},
+    {id: 3, text: 'FoamCore', iconName: 'alarm'},
+    {id: 4, text: 'DrainPro', iconName: 'build'},
   ];
 
   const handleButtonClick = (item: Item) => {
-    console.log(item);
+    console.log(genetateUUID());
     dispatch(updateCurrentCategory(item.text));
-    if (currentCart.items.length === 0) {
-      const cartItem: ICart = {
-        id: (Math.random() * 1000000).toString(),
-        totalAmount: '0',
-        items: [],
-      };
-
-      dispatch(updateCurrentCart(cartItem));
+    const cartItem: ICart = {
+      id: genetateUUID().toString(),
+      totalAmount: '0',
+      items: [],
+    };
+    if (cartList.length === 0) {
+      dispatch(addNewCartInList(cartItem));
     }
-
+    if (currentCart.id === '') {
+      dispatch(setCurrentCart(cartItem));
+    }
     navigation.navigate('subproduct');
   };
 

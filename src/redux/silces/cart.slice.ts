@@ -26,6 +26,7 @@ export const cartSlice = createSlice({
       state: ICartState,
       action: PayloadAction<ICartItem>,
     ) => {
+      console.log(typeof action.payload, 'in slice');
       return {
         ...state,
         currentCart: {
@@ -39,6 +40,17 @@ export const cartSlice = createSlice({
       return {
         ...state,
         cartList: [action.payload, ...state.cartList],
+      };
+    },
+
+    updateCartInList: (state: ICartState, action: PayloadAction<ICartItem>) => {
+      return {
+        ...state,
+        cartList: state.cartList.map((cart, index) =>
+          cart.id === action.payload.id
+            ? {...cart, items: [action.payload, ...state.cartList[index].items]}
+            : cart,
+        ),
       };
     },
 
@@ -78,6 +90,7 @@ export const {
   updateCurrentCart,
   updateCurrentCategory,
   addNewCartInList,
+  updateCartInList,
   removeCartItem,
   setCurrentCart,
   clearCart,

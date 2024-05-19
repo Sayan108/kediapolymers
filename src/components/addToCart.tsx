@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,44 +9,72 @@ import {
 } from 'react-native';
 import {RadioButton, TextInput, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {ICartItem} from '../redux/redux.constants';
+import {
+  Category,
+  genetateUUID,
+  getCategoryEnumValueByString,
+} from '../redux/utils';
+import {RootState} from '../redux';
+import {updateCartInList, updateCurrentCart} from '../redux/silces/cart.slice';
 
 const AddToCartCard = (props: any) => {
-  const dropdown = [
-    '10 cm',
-    '20 cm',
-    '30 cm',
-    '40 cm',
-    '50 cm',
-    '10 cm',
-    '20 cm',
-    '30 cm',
-    '40 cm',
-    '50 cm',
-  ];
+  const dropdown = ['10 cm', '20 cm', '30 cm', '40 cm', '50 cm'];
   const {item} = props;
-  const [quantity, setQuantity] = useState<any>(item?.quantity ?? 1);
+  const [cartItem, setCartItem] = useState({
+    count: parseInt(item?.quantity ?? 0),
+    selectedItem: '',
+    productName: '',
+    totalAmount: 0,
+  });
   const [showDropDown, setShowDropDown] = useState(false);
-  const [selectedItem, setSelectedItem] = useState('');
+  const [shouldDisable, setShouldDisable] = useState(true);
 
-  console.log(item);
+  const dispatch = useDispatch();
+  const {currentCategory} = useSelector((state: RootState) => state.cart);
 
-  const handleIncrement = () => {
-    setQuantity((prevQuantity: any) => prevQuantity + 1);
-  };
+  const {cartList} = useSelector((state: RootState) => state.cart);
 
-  const handleDecrement = () => {
-    setQuantity((prevQuantity: any) =>
-      prevQuantity > 1 ? prevQuantity - 1 : 1,
-    );
-  };
+  const {currentCart} = useSelector((state: RootState) => state.cart);
 
   const handleQuantityChange = (text: string) => {
     if (/^\d+$/.test(text)) {
-      setQuantity(parseInt(text));
+      setCartItem(prevState => ({...prevState, count: parseInt(text)}));
     } else if (text === '') {
-      setQuantity(0);
+      setCartItem(prevState => ({...prevState, count: 0}));
     }
   };
+
+  const handleAddToCartClick = () => {
+    const newCartItem: ICartItem = {
+      id: genetateUUID(),
+      productName: cartItem.productName,
+      productPrice: item?.price.toString(),
+      totalPrice: cartItem.totalAmount.toString(),
+      count: cartItem.count,
+    };
+    dispatch(updateCurrentCart(newCartItem));
+    dispatch(updateCartInList(newCartItem));
+    console.log(currentCart.items, 'current cart');
+    console.log(cartList, ' cart list');
+  };
+
+  useEffect(() => {
+    if (cartItem.count > 0 && cartItem.selectedItem !== '') {
+      setShouldDisable(false);
+      console.log(cartItem.count, parseInt(item?.price as string), 'in cart');
+      const name: string = `${
+        Category[currentCategory as keyof typeof Category]
+      } ${item?.productName} ${cartItem.selectedItem}`;
+      setCartItem(prevState => ({
+        ...prevState,
+        productName: name,
+        totalAmount: cartItem.count * parseInt(item?.price),
+      }));
+    } else setShouldDisable(true);
+  }, [cartItem.count, cartItem.selectedItem]);
 
   return (
     <View style={styles.container}>
@@ -63,32 +91,25 @@ const AddToCartCard = (props: any) => {
           style={styles.dropdownContainer}
           onPress={() => setShowDropDown(true)}>
           <Text style={styles.dropdownText}>
-            {selectedItem || 'Choose dimension'}
+            {cartItem.selectedItem || 'Choose dimension'}
           </Text>
         </TouchableOpacity>
         <View style={styles.counterContainer}>
           <TextInput
-            value={quantity.toString()}
+            value={cartItem.count.toString()}
             onChangeText={handleQuantityChange}
             keyboardType="numeric"
             style={styles.counterInput}
           />
-          {/* <TouchableOpacity
-            onPress={handleDecrement}
-            style={styles.counterButton}>
-            <Text style={styles.counterText}>-</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleIncrement}
-            style={styles.counterButton}>
-            <Text style={styles.counterText}>+</Text>
-          </TouchableOpacity> */}
         </View>
       </View>
-      <Text style={styles.price}>{item?.price ?? '$10'}</Text>
+      <Text style={styles.price}>{cartItem.totalAmount ?? '$10'}</Text>
       <View style={styles.buttonContainer}>
-        <Button mode="contained" onPress={() => console.log('Button Pressed')}>
-          Add to Cart
+        <Button
+          disabled={shouldDisable}
+          mode="contained"
+          onPress={handleAddToCartClick}>
+          + Add to Cart
         </Button>
       </View>
 
@@ -102,10 +123,13 @@ const AddToCartCard = (props: any) => {
           <View style={styles.modalContainer}>
             <RadioButton.Group
               onValueChange={newValue => {
-                setSelectedItem(newValue);
+                setCartItem(prevState => ({
+                  ...prevState,
+                  selectedItem: newValue,
+                }));
                 setShowDropDown(false);
               }}
-              value={selectedItem}>
+              value={cartItem.selectedItem}>
               {dropdown?.map((item, index) => (
                 <View key={index} style={styles.dropdownItem}>
                   <RadioButton value={item} color={'black'} />

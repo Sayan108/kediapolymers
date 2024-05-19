@@ -1,6 +1,10 @@
 import React from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Assuming you're using Material Icons for icons
+import {
+  LargeCategoryName,
+  getCategoryLargeEnumValueByString,
+} from '../../redux/utils';
 
 export interface Item {
   id: number;
@@ -23,7 +27,9 @@ const ListItem: React.FC<{
     <Pressable onPress={() => handleButtonClick(item)}>
       <View style={styles.item}>
         <Icon name={item.iconName} size={24} color="black" />
-        <Text style={styles.text}>{item.text}</Text>
+        <Text style={styles.text}>
+          {LargeCategoryName[item.text as keyof typeof LargeCategoryName]}
+        </Text>
       </View>
     </Pressable>
   </View>

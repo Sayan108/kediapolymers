@@ -85,7 +85,7 @@ const Cartpage = ({navigation}: {navigation: any}) => {
       ) : (
         <ScrollView>
           <View style={{alignItems: 'center', paddingTop: 25}}>
-            {itemList?.map((item, index) => (
+            {items?.map((item, index) => (
               <View key={index}>
                 <CartItem item={item} />
               </View>

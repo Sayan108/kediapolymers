@@ -3,7 +3,7 @@ import {BottomNavigation, TouchableRipple} from 'react-native-paper';
 
 import {StyleSheet, Text, View} from 'react-native';
 import HomePageComponent from '../components/homePageComponent';
-import Cartpage from './cartPage';
+
 import Orderscreen from './orderSccreen';
 import Cartscreen from './cartScreen';
 

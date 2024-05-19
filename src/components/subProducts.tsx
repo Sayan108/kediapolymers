@@ -4,7 +4,7 @@ import AddToCartCard from './addToCart';
 import {Button} from 'react-native-paper';
 import Layout from './layOut';
 const SubProductList = ({navigation}: {navigation: any}) => {
-  const dummyItem = {productName: '90 degree elbow', price: '$25'};
+  const dummyItem = {productName: '90 degree elbow', price: '25'};
   const items = ['90 degree elbow', '45 degree elbow', '120 degree elbow'];
   const [showAddCart, setshowAddCart] = useState<boolean>(false);
   const [selectedItem, setselectedItem] = useState<number | null>(null);
