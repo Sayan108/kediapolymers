@@ -38,6 +38,7 @@ export interface OTPSuccessPayload {
 
 export interface ICart {
   id: string;
+  cartName?: string;
   totalAmount: string;
   items: ICartItem[];
 }
@@ -56,10 +57,24 @@ export interface ICartState {
   currentCart: ICart;
 }
 
+export interface IOrderState {
+  orderList: ICart[];
+  currentOrder: ICart;
+}
+
 export const cartInitialState: ICartState = {
   currentCategory: '',
   cartList: [],
   currentCart: {
+    id: '',
+    totalAmount: '0',
+    items: [],
+  },
+};
+
+export const orderInitialState: IOrderState = {
+  orderList: [],
+  currentOrder: {
     id: '',
     totalAmount: '0',
     items: [],

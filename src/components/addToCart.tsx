@@ -22,7 +22,7 @@ import {updateCartInList, updateCurrentCart} from '../redux/silces/cart.slice';
 
 const AddToCartCard = (props: any) => {
   const dropdown = ['10 cm', '20 cm', '30 cm', '40 cm', '50 cm'];
-  const {item} = props;
+  const {item, setSelectedItem} = props;
   const [cartItem, setCartItem] = useState({
     count: parseInt(item?.quantity ?? 0),
     selectedItem: '',
@@ -56,9 +56,10 @@ const AddToCartCard = (props: any) => {
       count: cartItem.count,
     };
     dispatch(updateCurrentCart(newCartItem));
-    dispatch(updateCartInList(newCartItem));
-    console.log(currentCart.items, 'current cart');
-    console.log(cartList, ' cart list');
+    // dispatch(updateCartInList(newCartItem));
+    // console.log(currentCart.items, 'current cart');
+    // console.log(cartList, ' cart list');
+    setSelectedItem(null);
   };
 
   useEffect(() => {

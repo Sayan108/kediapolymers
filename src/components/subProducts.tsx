@@ -5,7 +5,11 @@ import {Button} from 'react-native-paper';
 import Layout from './layOut';
 const SubProductList = ({navigation}: {navigation: any}) => {
   const dummyItem = {productName: '90 degree elbow', price: '25'};
-  const items = ['90 degree elbow', '45 degree elbow', '120 degree elbow'];
+  const items = [
+    {productName: '90 degree elbow', price: '25'},
+    {productName: '45 degree elbow', price: '12.5'},
+    {productName: '120 degree elbow', price: '50'},
+  ];
   const [showAddCart, setshowAddCart] = useState<boolean>(false);
   const [selectedItem, setselectedItem] = useState<number | null>(null);
   const handleNavigation = () => {
@@ -18,7 +22,7 @@ const SubProductList = ({navigation}: {navigation: any}) => {
           {items.map((item, index) => (
             <Pressable key={index}>
               {index === selectedItem ? (
-                <AddToCartCard item={dummyItem} />
+                <AddToCartCard item={item} setSelectedItem={setselectedItem} />
               ) : (
                 <View
                   onTouchEnd={() => {
@@ -26,7 +30,7 @@ const SubProductList = ({navigation}: {navigation: any}) => {
                     console.log('touching');
                   }}
                   style={styles.item}>
-                  <Text style={styles.text}>{item}</Text>
+                  <Text style={styles.text}>{item.productName}</Text>
                 </View>
               )}
             </Pressable>

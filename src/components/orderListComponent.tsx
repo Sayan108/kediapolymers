@@ -12,11 +12,12 @@ interface OrderItem {
 
 // Define the type for the component props
 interface OrderListProps {
-  orders: OrderItem[];
+  orders: any[];
   onItemPress: (id: string) => void;
 }
 
 const OrderList: React.FC<OrderListProps> = ({orders, onItemPress}) => {
+  console.log(orders, 'orders');
   return (
     <View style={styles.container}>
       {orders.map(order => (
@@ -33,7 +34,7 @@ const OrderList: React.FC<OrderListProps> = ({orders, onItemPress}) => {
           <View style={styles.row}>
             <Icon name="cart-outline" size={24} color="#4CAF50" />
             <Text style={styles.text}>
-              {order.name} - {order.quantity} pcs - ${order.price.toFixed(2)}
+              {order?.cartName ?? 'Cart name'} ${order?.totalAmmount}
             </Text>
           </View>
         </Pressable>

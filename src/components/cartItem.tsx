@@ -11,19 +11,9 @@ import {RadioButton, TextInput, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const CartItem = (props: any) => {
-  const dropdown = [
-    '10 cm',
-    '20 cm',
-    '30 cm',
-    '40 cm',
-    '50 cm',
-    '10 cm',
-    '20 cm',
-    '30 cm',
-    '40 cm',
-    '50 cm',
-  ];
+  const dropdown = ['10 cm', '20 cm', '30 cm', '40 cm', '50 cm'];
   const {item} = props;
+  console.log(item, 'Dropdown');
   const [quantity, setQuantity] = useState<any>(item?.quantity ?? 1);
   const [showDropDown, setShowDropDown] = useState(false);
   const [selectedItem, setSelectedItem] = useState('');
@@ -31,16 +21,6 @@ const CartItem = (props: any) => {
   useEffect(() => {
     setQuantity(parseInt(item.quantity ?? 1));
   }, [item.quantity]);
-
-  const handleIncrement = () => {
-    setQuantity((prevQuantity: any) => prevQuantity + 1);
-  };
-
-  const handleDecrement = () => {
-    setQuantity((prevQuantity: any) =>
-      prevQuantity > 1 ? prevQuantity - 1 : 1,
-    );
-  };
 
   const handleQuantityChange = (text: string) => {
     if (/^\d+$/.test(text)) {
@@ -65,16 +45,17 @@ const CartItem = (props: any) => {
           style={styles.dropdownContainer}
           onPress={() => setShowDropDown(true)}>
           <Text style={styles.dropdownText}>
-            {selectedItem || 'Choose dimension'}
+            {'Total price - $ ' + item?.totalPrice}
           </Text>
         </TouchableOpacity>
         <View style={styles.counterContainer}>
-          <TextInput
+          <Text style={styles.dropdownText}>{'Quantity -' + item?.count}</Text>
+          {/* <TextInput
             value={quantity.toString()}
             onChangeText={handleQuantityChange}
             keyboardType="numeric"
             style={styles.counterInput}
-          />
+          /> */}
           {/* Uncomment if you want to use increment/decrement buttons */}
           {/* <TouchableOpacity onPress={handleDecrement} style={styles.counterButton}>
             <Text style={styles.counterText}>-</Text>
@@ -84,9 +65,11 @@ const CartItem = (props: any) => {
           </TouchableOpacity> */}
         </View>
       </View>
-      <Text style={styles.price}>{item?.price ?? '$10'}</Text>
+      <Text style={styles.price}>
+        {'Unit price $  ' + item?.productPrice ?? '$10'}
+      </Text>
 
-      <Modal
+      {/* <Modal
         transparent={true}
         visible={showDropDown}
         onRequestClose={() => setShowDropDown(false)}>
@@ -109,7 +92,7 @@ const CartItem = (props: any) => {
             </RadioButton.Group>
           </View>
         </Pressable>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
@@ -150,6 +133,8 @@ const styles = StyleSheet.create({
   dropdownText: {
     color: 'black',
     textAlign: 'center',
+    alignItems: 'center',
+    paddingLeft: 10,
   },
   counterText: {
     fontSize: 24,
