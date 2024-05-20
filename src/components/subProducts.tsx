@@ -3,14 +3,20 @@ import {View, Text, Pressable, StyleSheet, ScrollView} from 'react-native';
 import AddToCartCard from './addToCart';
 import {Button} from 'react-native-paper';
 import Layout from './layOut';
+import {useSelector} from 'react-redux';
+import {RootState} from '../redux';
+
 const SubProductList = ({navigation}: {navigation: any}) => {
-  const dummyItem = {productName: '90 degree elbow', price: '25'};
+  const currentCartList = useSelector(
+    (state: RootState) => state.cart.currentCart,
+  );
+
   const items = [
     {productName: '90 degree elbow', price: '25'},
     {productName: '45 degree elbow', price: '12.5'},
     {productName: '120 degree elbow', price: '50'},
   ];
-  const [showAddCart, setshowAddCart] = useState<boolean>(false);
+
   const [selectedItem, setselectedItem] = useState<number | null>(null);
   const handleNavigation = () => {
     navigation.navigate('home');
@@ -46,6 +52,7 @@ const SubProductList = ({navigation}: {navigation: any}) => {
             <Button
               style={{justifyContent: 'space-between', marginBottom: 20}}
               mode="contained"
+              disabled={currentCartList.items.length === 0}
               onPress={() => {
                 navigation.navigate('cart');
               }}>
