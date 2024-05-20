@@ -6,6 +6,7 @@ import {RootState} from '../../redux';
 import {
   addNewCartInList,
   setCurrentCart,
+  setInitialCurrentCart,
   updateCurrentCategory,
 } from '../../redux/silces/cart.slice';
 import {ICart, ICartItem} from '../../redux/redux.constants';
@@ -32,11 +33,11 @@ const HomePageComponent = ({navigation}: {navigation: any}) => {
       totalAmount: '0',
       items: [],
     };
-    if (cartList.length === 0) {
-      dispatch(addNewCartInList(cartItem));
-    }
+    // if (cartList.length === 0) {
+    //   dispatch(addNewCartInList(cartItem));
+    // }
     if (currentCart.id === '') {
-      dispatch(setCurrentCart(cartItem));
+      dispatch(setInitialCurrentCart(cartItem));
     }
     navigation.navigate('subproduct');
   };

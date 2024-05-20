@@ -16,7 +16,7 @@ interface OrderListProps {
   onItemPress: (id: any) => void;
 }
 
-const OrderList: React.FC<OrderListProps> = ({orders, onItemPress}) => {
+const Cartlist: React.FC<OrderListProps> = ({orders, onItemPress}) => {
   console.log(orders, 'orders');
   return (
     <View style={styles.container}>
@@ -34,10 +34,7 @@ const OrderList: React.FC<OrderListProps> = ({orders, onItemPress}) => {
           <View style={styles.row}>
             <Icon name="cart-outline" size={24} color="#4CAF50" />
             <Text style={styles.text}>
-              {'Id - ' + order?.id?.substring(0, 6) ?? 'No name'}{' '}
-            </Text>
-            <Text style={styles.text}>
-              Total price - ₹ {order?.totalAmount}
+              {order?.cartName ?? 'No name'} ${order?.totalAmount}
             </Text>
           </View>
         </Pressable>
@@ -78,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderList;
+export default Cartlist;

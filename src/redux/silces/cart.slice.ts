@@ -27,11 +27,16 @@ export const cartSlice = createSlice({
       action: PayloadAction<ICartItem>,
     ) => {
       console.log(typeof action.payload, 'in slice');
+      const totalAmount =
+        parseInt(state.currentCart.totalAmount) +
+        parseInt(action.payload.totalPrice);
       return {
         ...state,
+
         currentCart: {
           ...state.currentCart,
           items: [action.payload, ...state?.currentCart?.items],
+          totalAmount: totalAmount.toString(),
         },
       };
     },
@@ -69,7 +74,30 @@ export const cartSlice = createSlice({
       };
     },
 
-    removeCartItem: (state: ICartState, action: PayloadAction<ICartItem>) => {
+    clearCurrentCart: (state: ICartState, action: PayloadAction<ICart>) => {
+      const initialCart = {
+        id: '',
+        totalAmount: '0',
+        items: [],
+      };
+
+      return {
+        ...state,
+        currentCart: initialCart,
+      };
+    },
+
+    setInitialCurrentCart: (
+      state: ICartState,
+      action: PayloadAction<ICart>,
+    ) => {
+      return {
+        ...state,
+        currentCart: action.payload,
+      };
+    },
+
+    removeCartItem: (state: ICartState, action: PayloadAction<ICart>) => {
       const newItems = state.cartList.filter(
         cart => cart.id !== action.payload.id,
       );
@@ -94,6 +122,8 @@ export const {
   removeCartItem,
   setCurrentCart,
   clearCart,
+  clearCurrentCart,
+  setInitialCurrentCart,
 } = cartSlice.actions;
 
 export const cartReducer = cartSlice.reducer;

@@ -2,6 +2,9 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import Layout from '../components/layOut';
 import OrderList from '../components/orderListComponent';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../redux';
+import {setCurrentOrder} from '../redux/silces/order.slice';
 
 const Orderscreen = ({
   navigation,
@@ -10,23 +13,19 @@ const Orderscreen = ({
   navigation: any;
   handleBack: any;
 }) => {
-  const orders = [
-    {id: '1', name: 'Apple', quantity: 3, price: 1.5},
-    {id: '2', name: 'Banana', quantity: 2, price: 0.75},
-    {id: '3', name: 'Cherry', quantity: 10, price: 0.2},
-  ];
+  const dispatch = useDispatch();
+  const {orderList} = useSelector((state: RootState) => state.order);
+  const handleItemClick = (item: any) => {
+    dispatch(setCurrentOrder(item));
+    navigation.navigate('billingscreen', {id: item.id});
+  };
   return (
     <Layout
       headerText="Orders"
       navigation={() => {
         handleBack(0);
       }}>
-      <OrderList
-        orders={orders}
-        onItemPress={() => {
-          navigation.navigate('billingscreen');
-        }}
-      />
+      <OrderList orders={orderList} onItemPress={handleItemClick} />
     </Layout>
   );
 };

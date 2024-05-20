@@ -7,8 +7,11 @@ import HomePageComponent from '../components/homePageComponent';
 import Orderscreen from './orderSccreen';
 import Cartscreen from './cartScreen';
 
-const HomeScreen = ({navigation}: {navigation: any}) => {
-  const [index, setIndex] = React.useState(0);
+const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
+  const {id = 0} = route.params;
+
+  console.log(id, 'id');
+  const [index, setIndex] = React.useState(id ?? 0);
 
   const handleIndexChange = (params: number) => {
     setIndex(params);
@@ -48,6 +51,10 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
     cart: cartPageRoute,
     orders: OrdersPage,
   });
+
+  React.useEffect(() => {
+    setIndex(id);
+  }, []);
 
   return (
     <BottomNavigation
