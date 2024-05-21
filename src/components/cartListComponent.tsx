@@ -34,7 +34,7 @@ const Cartlist: React.FC<OrderListProps> = ({orders, onItemPress}) => {
           <View style={styles.row}>
             <Icon name="cart-outline" size={24} color="#4CAF50" />
             <Text style={styles.text}>
-              {order?.cartName ?? 'No name'} ${order?.totalAmount}
+              {order?.cartName ?? 'No name'} ₹ {order?.totalAmount}
             </Text>
           </View>
         </Pressable>

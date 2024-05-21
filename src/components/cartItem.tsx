@@ -45,7 +45,7 @@ const CartItem = (props: any) => {
           style={styles.dropdownContainer}
           onPress={() => setShowDropDown(true)}>
           <Text style={styles.dropdownText}>
-            {'Total price - $ ' + item?.totalPrice}
+            {'Total price - ₹ ' + item?.totalPrice}
           </Text>
         </TouchableOpacity>
         <View style={styles.counterContainer}>
@@ -66,7 +66,7 @@ const CartItem = (props: any) => {
         </View>
       </View>
       <Text style={styles.price}>
-        {'Unit price $  ' + item?.productPrice ?? '$10'}
+        {'Unit price ₹  ' + item?.productPrice ?? '₹10'}
       </Text>
 
       {/* <Modal
