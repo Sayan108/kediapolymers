@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import React from 'react';
 import Layout from '../components/layOut';
 import OrderList from '../components/orderListComponent';
@@ -25,7 +25,9 @@ const Orderscreen = ({
       navigation={() => {
         handleBack(0);
       }}>
-      <OrderList orders={orderList} onItemPress={handleItemClick} />
+      <ScrollView>
+        <OrderList orders={orderList} onItemPress={handleItemClick} />
+      </ScrollView>
     </Layout>
   );
 };

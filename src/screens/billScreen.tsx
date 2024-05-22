@@ -4,6 +4,7 @@ import {Button, DataTable} from 'react-native-paper';
 import Layout from '../components/layOut';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux';
+import GeneratePDF from '../components/generatePdf';
 
 const TableExample = ({navigation, route}: {navigation: any; route: any}) => {
   const {currentOrder} = useSelector((state: RootState) => state.order);
@@ -64,13 +65,7 @@ const TableExample = ({navigation, route}: {navigation: any; route: any}) => {
           </DataTable.Row>
         </DataTable>
         <View style={{padding: 15}}>
-          <Button
-            mode="contained"
-            onPress={() => {
-              navigation.navigate('home');
-            }}>
-            {'Generate invoice'}
-          </Button>
+          <GeneratePDF />
         </View>
       </View>
     </Layout>

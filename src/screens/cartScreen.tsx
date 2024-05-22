@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text , ScrollView} from 'react-native';
 import React from 'react';
 import Layout from '../components/layOut';
 
@@ -28,7 +28,9 @@ const Cartscreen = ({
       navigation={() => {
         handleBack(0);
       }}>
-      <Cartlist orders={cartList} onItemPress={handleItemClick} />
+      <ScrollView>
+        <Cartlist orders={cartList} onItemPress={handleItemClick} />
+      </ScrollView>
     </Layout>
   );
 };
