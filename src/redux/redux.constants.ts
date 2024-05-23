@@ -51,6 +51,14 @@ export interface ICartItem {
   totalPrice: string;
 }
 
+export interface IOrder {
+  id: string;
+  cartName?: string;
+  totalAmount: string;
+  items: ICartItem[];
+  orderDate?: string;
+}
+
 export interface ICartState {
   currentCategory: string;
   cartList: ICart[];
@@ -58,8 +66,8 @@ export interface ICartState {
 }
 
 export interface IOrderState {
-  orderList: ICart[];
-  currentOrder: ICart;
+  orderList: IOrder[];
+  currentOrder: IOrder;
 }
 
 export const cartInitialState: ICartState = {

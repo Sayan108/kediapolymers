@@ -33,7 +33,7 @@ const SubProductList = ({navigation}: {navigation: any}) => {
                 <View
                   onTouchEnd={() => {
                     setselectedItem(index);
-                    console.log('touching');
+                    // console.log('touching');
                   }}
                   style={styles.item}>
                   <Text style={styles.text}>{item.productName}</Text>

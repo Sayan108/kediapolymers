@@ -1,4 +1,4 @@
-import {View, Text , ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import React from 'react';
 import Layout from '../components/layOut';
 
@@ -21,7 +21,7 @@ const Cartscreen = ({
     navigation.navigate('cart', {id: item.id});
   };
 
-  console.log(cartList, 'cartlist');
+  // console.log(cartList, 'cartlist');
   return (
     <Layout
       headerText="Cart "

@@ -1,5 +1,6 @@
 import {type PayloadAction, createSlice} from '@reduxjs/toolkit';
-import {orderInitialState, IOrderState} from '../redux.constants';
+import {orderInitialState, IOrderState, IOrder} from '../redux.constants';
+import {act} from 'react';
 
 // Redux Toolkit slice
 export const orderSlice = createSlice({
@@ -15,6 +16,14 @@ export const orderSlice = createSlice({
     },
 
     addNewOrderInList: (state: IOrderState, action: PayloadAction<any>) => {
+      const newOBJ: IOrder = {
+        ...action.payload,
+        orderDate: new Date().toLocaleDateString('en-IN', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }),
+      };
       return {
         ...state,
         orderList: [action.payload, ...state.orderList],

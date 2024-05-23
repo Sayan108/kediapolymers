@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import EmptyPage from './emptyPage';
 
 // Define the type for the order items
 interface OrderItem {
@@ -17,28 +18,35 @@ interface OrderListProps {
 }
 
 const Cartlist: React.FC<OrderListProps> = ({orders, onItemPress}) => {
-  console.log(orders, 'orders');
+  // console.log(orders, 'orders');
   return (
     <View style={styles.container}>
-      {orders.map(order => (
-        <Pressable
-          key={order.id}
-          onPress={() => onItemPress(order)}
-          style={({pressed}) => [
-            {
-              backgroundColor: pressed ? '#e0e0e0' : '#ffffff',
-              transform: pressed ? [{scale: 0.98}] : [{scale: 1}],
-            },
-            styles.pressable,
-          ]}>
-          <View style={styles.row}>
-            <Icon name="cart-outline" size={24} color="#4CAF50" />
-            <Text style={styles.text}>
-              {order?.cartName ?? 'No name'} ₹ {order?.totalAmount}
-            </Text>
-          </View>
-        </Pressable>
-      ))}
+      {orders.length === 0 ? (
+        <EmptyPage text="No cart avilable!" />
+      ) : (
+        <>
+          {' '}
+          {orders.map(order => (
+            <Pressable
+              key={order.id}
+              onPress={() => onItemPress(order)}
+              style={({pressed}) => [
+                {
+                  backgroundColor: pressed ? '#e0e0e0' : '#ffffff',
+                  transform: pressed ? [{scale: 0.98}] : [{scale: 1}],
+                },
+                styles.pressable,
+              ]}>
+              <View style={styles.row}>
+                <Icon name="cart-outline" size={24} color="#4CAF50" />
+                <Text style={styles.text}>
+                  {order?.cartName ?? 'No name'} ₹ {order?.totalAmount}
+                </Text>
+              </View>
+            </Pressable>
+          ))}
+        </>
+      )}
     </View>
   );
 };

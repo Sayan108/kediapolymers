@@ -26,7 +26,7 @@ const HomePageComponent = ({navigation}: {navigation: any}) => {
   ];
 
   const handleButtonClick = (item: Item) => {
-    console.log(genetateUUID());
+    // console.log(genetateUUID());
     dispatch(updateCurrentCategory(item.text));
     const cartItem: ICart = {
       id: genetateUUID().toString(),

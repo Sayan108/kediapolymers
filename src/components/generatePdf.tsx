@@ -34,7 +34,7 @@ function GeneratePDF() {
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: url('https://tiimg.tistatic.com/images/l/1/logo_97408.jpg');
+     
         background-size: cover;
         background-position: center;
         opacity: 0.25;
@@ -69,7 +69,7 @@ function GeneratePDF() {
   </head>
   <body>
     <header>
-      <img src="https://tiimg.tistatic.com/images/l/1/logo_97408.jpg}" alt="Company Logo">
+    <div><img src="https://tiimg.tistatic.com/images/l/1/logo_97408.jpg" alt="Company Logo"></div>
       <h1>Invoice for Order #${currentOrder.id.substring(0, 6)}</h1>
     </header>
     <h1>Order Summary</h1>
@@ -80,7 +80,15 @@ function GeneratePDF() {
       </tr>
       <tr>
         <th>Order Date</th>
-        <td>${new Date()}</td>
+        <td>${
+          currentOrder?.orderDate
+            ? currentOrder?.orderDate
+            : new Date().toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })
+        }</td>
       </tr>
       <tr></tr>
       <tr>
@@ -106,7 +114,7 @@ function GeneratePDF() {
           <td>${line.id.substring(0, 6)}</td>
           <td>${line.productName}</td>
           <td>${line.count}</td>
-          <td>${line.totalPrice}</td>
+          <td>₹ ${line.totalPrice}</td>
         </tr>
       `,
         )
@@ -133,15 +141,13 @@ function GeneratePDF() {
       </tr>
       <tr></tr>
     </table>
-    <footer>
-      <p>Thank you for your business!</p>
-    </footer>
+  
   </body>
 </html>
 `;
       const options = {
         html,
-        fileName: `invoice_${currentOrder.id.substring(0, 6)}`,
+        fileName: `invoice_kp_${currentOrder.id.substring(0, 6)}`,
         directory: 'Invoices',
       };
       const file = await RNHTMLtoPDF.convert(options);

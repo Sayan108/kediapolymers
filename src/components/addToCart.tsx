@@ -57,15 +57,15 @@ const AddToCartCard = (props: any) => {
     };
     dispatch(updateCurrentCart(newCartItem));
     // dispatch(updateCartInList(newCartItem));
-    // console.log(currentCart.items, 'current cart');
-    // console.log(cartList, ' cart list');
+    // // console.log(currentCart.items, 'current cart');
+    // // console.log(cartList, ' cart list');
     setSelectedItem(null);
   };
 
   useEffect(() => {
     if (cartItem.count > 0 && cartItem.selectedItem !== '') {
       setShouldDisable(false);
-      console.log(cartItem.count, parseInt(item?.price as string), 'in cart');
+      // console.log(cartItem.count, parseInt(item?.price as string), 'in cart');
       const name: string = `${
         Category[currentCategory as keyof typeof Category]
       } ${item?.productName} ${cartItem.selectedItem}`;

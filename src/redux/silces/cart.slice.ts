@@ -26,7 +26,7 @@ export const cartSlice = createSlice({
       state: ICartState,
       action: PayloadAction<ICartItem>,
     ) => {
-      console.log(typeof action.payload, 'in slice');
+      // console.log(typeof action.payload, 'in slice');
       const totalAmount =
         parseInt(state.currentCart.totalAmount) +
         parseInt(action.payload.totalPrice);
