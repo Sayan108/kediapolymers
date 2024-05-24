@@ -21,7 +21,7 @@ const OrderList: React.FC<OrderListProps> = ({orders, onItemPress}) => {
   // console.log(orders, 'orders');
   return (
     <View style={styles.container}>
-      {orders.length === 0 ? (
+      {orders.length !== 0 ? (
         <>
           {orders.map(order => (
             <Pressable
@@ -51,7 +51,6 @@ const OrderList: React.FC<OrderListProps> = ({orders, onItemPress}) => {
           <EmptyPage text="No orders for now !" />
         </>
       )}
-      <EmptyPage text="No orders for now !" />
     </View>
   );
 };
