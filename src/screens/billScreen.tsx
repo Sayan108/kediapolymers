@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {Button, DataTable} from 'react-native-paper';
+import {Button, DataTable, Text} from 'react-native-paper';
 import Layout from '../components/layOut';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux';
@@ -29,8 +29,14 @@ const TableExample = ({navigation, route}: {navigation: any; route: any}) => {
 
           {currentOrder.items.map(item => (
             <DataTable.Row key={item.id}>
-              <DataTable.Cell style={{flex: 7, justifyContent: 'flex-start'}}>
-                {item.productName} X {item.count}
+              <DataTable.Cell
+                style={{
+                  flex: 7,
+                  justifyContent: 'flex-start',
+                }}>
+                <Text numberOfLines={2} ellipsizeMode="tail">
+                  {item.productName} X {item.count}
+                </Text>
               </DataTable.Cell>
               <DataTable.Cell style={{flex: 3, justifyContent: 'flex-end'}}>
                 ₹ {item.totalPrice}
@@ -50,7 +56,7 @@ const TableExample = ({navigation, route}: {navigation: any; route: any}) => {
               {'Tax'}
             </DataTable.Cell>
             <DataTable.Cell style={{flex: 3, justifyContent: 'flex-end'}}>
-              ₹ {parseInt(currentOrder.totalAmount) * 0.18}
+              ₹ {(parseFloat(currentOrder.totalAmount) * 0.18).toFixed()}
             </DataTable.Cell>
           </DataTable.Row>
           <DataTable.Row>
@@ -59,8 +65,10 @@ const TableExample = ({navigation, route}: {navigation: any; route: any}) => {
             </DataTable.Cell>
             <DataTable.Cell style={{flex: 3, justifyContent: 'flex-end'}}>
               ₹{' '}
-              {parseInt(currentOrder.totalAmount) +
-                parseInt(currentOrder.totalAmount) * 0.18}
+              {(
+                parseFloat(currentOrder.totalAmount) +
+                parseFloat(currentOrder.totalAmount) * 0.18
+              ).toFixed(2)}
             </DataTable.Cell>
           </DataTable.Row>
         </DataTable>

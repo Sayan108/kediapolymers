@@ -25,7 +25,6 @@ const Cartlist: React.FC<OrderListProps> = ({orders, onItemPress}) => {
         <EmptyPage text="No cart avilable!" />
       ) : (
         <>
-          {' '}
           {orders.map(order => (
             <Pressable
               key={order.id}

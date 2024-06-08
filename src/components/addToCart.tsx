@@ -14,20 +14,22 @@ import {useDispatch, useSelector} from 'react-redux';
 import {ICartItem} from '../redux/redux.constants';
 import {
   Category,
+  LargeCategoryName,
   genetateUUID,
   getCategoryEnumValueByString,
 } from '../redux/utils';
 import {RootState} from '../redux';
 import {updateCartInList, updateCurrentCart} from '../redux/silces/cart.slice';
+import {toPascalCase} from '../products.config';
 
 const AddToCartCard = (props: any) => {
   const dropdown = ['10 cm', '20 cm', '30 cm', '40 cm', '50 cm'];
   const {item, setSelectedItem} = props;
   const [cartItem, setCartItem] = useState({
-    count: parseInt(item?.quantity ?? 0),
+    count: parseInt(item?.quantity ?? 1),
     selectedItem: '',
     productName: '',
-    totalAmount: 0,
+    totalAmount: item?.Column3,
   });
   const [showDropDown, setShowDropDown] = useState(false);
   const [shouldDisable, setShouldDisable] = useState(true);
@@ -51,28 +53,28 @@ const AddToCartCard = (props: any) => {
     const newCartItem: ICartItem = {
       id: genetateUUID(),
       productName: cartItem.productName,
-      productPrice: item?.price.toString(),
+      productPrice: item?.Column3.toString(),
       totalPrice: cartItem.totalAmount.toString(),
       count: cartItem.count,
     };
     dispatch(updateCurrentCart(newCartItem));
-    // dispatch(updateCartInList(newCartItem));
-    // // console.log(currentCart.items, 'current cart');
-    // // console.log(cartList, ' cart list');
+
     setSelectedItem(null);
   };
 
   useEffect(() => {
-    if (cartItem.count > 0 && cartItem.selectedItem !== '') {
+    if (cartItem.count > 0) {
       setShouldDisable(false);
-      // console.log(cartItem.count, parseInt(item?.price as string), 'in cart');
+      // console.log(cartItem.count, parseFloat(item?.price as string), 'in cart');
       const name: string = `${
-        Category[currentCategory as keyof typeof Category]
-      } ${item?.productName} ${cartItem.selectedItem}`;
+        LargeCategoryName[currentCategory as keyof typeof Category]
+      } ${toPascalCase(item.title)}`;
       setCartItem(prevState => ({
         ...prevState,
         productName: name,
-        totalAmount: cartItem.count * parseInt(item?.price),
+        totalAmount: (cartItem.count * parseFloat(item?.Column3 ?? 0)).toFixed(
+          2,
+        ),
       }));
     } else setShouldDisable(true);
   }, [cartItem.count, cartItem.selectedItem]);
@@ -84,17 +86,19 @@ const AddToCartCard = (props: any) => {
           <Icon name="list-alt" size={24} color="black" />
         </View>
         <Text style={styles.productName}>
-          {item.productName ?? 'Product Name'}
+          {toPascalCase(item.title) ?? 'Product Name'}
         </Text>
       </View>
       <View style={styles.rowContainer}>
         <TouchableOpacity
+          disabled
           style={styles.dropdownContainer}
-          onPress={() => setShowDropDown(true)}>
+          onPress={() => {}}>
           <Text style={styles.dropdownText}>
-            {cartItem.selectedItem || 'Choose dimension'}
+            {'₹ ' + cartItem.totalAmount ?? '₹ 10'}
           </Text>
         </TouchableOpacity>
+
         <View style={styles.counterContainer}>
           <TextInput
             value={cartItem.count.toString()}
@@ -104,7 +108,7 @@ const AddToCartCard = (props: any) => {
           />
         </View>
       </View>
-      <Text style={styles.price}>{cartItem.totalAmount ?? '$10'}</Text>
+
       <View style={styles.buttonContainer}>
         <Button
           disabled={shouldDisable}

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {View, Text, TextInput, StyleSheet, ScrollView} from 'react-native';
 import ListWithIcons, {Item} from './listWithIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../redux';
@@ -11,6 +11,7 @@ import {
 } from '../../redux/silces/cart.slice';
 import {ICart, ICartItem} from '../../redux/redux.constants';
 import {genetateUUID} from '../../redux/utils';
+import {allItems as items} from '../../products.config';
 
 const HomePageComponent = ({navigation}: {navigation: any}) => {
   const {cartList} = useSelector((state: RootState) => state.cart);
@@ -18,12 +19,12 @@ const HomePageComponent = ({navigation}: {navigation: any}) => {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState('');
 
-  const items: Item[] = [
-    {id: 1, text: 'Agriculture', iconName: 'accessibility'},
-    {id: 2, text: 'CPVCPro', iconName: 'alarm'},
-    {id: 3, text: 'FoamCore', iconName: 'alarm'},
-    {id: 4, text: 'DrainPro', iconName: 'build'},
-  ];
+  // const items: Item[] = [
+  //   {id: 1, text: 'Agriculture', iconName: 'accessibility'},
+  //   {id: 2, text: 'CPVCPro', iconName: 'alarm'},
+  //   {id: 3, text: 'FoamCore', iconName: 'alarm'},
+  //   {id: 4, text: 'DrainPro', iconName: 'build'},
+  // ];
 
   const handleButtonClick = (item: Item) => {
     // console.log(genetateUUID());
@@ -46,7 +47,7 @@ const HomePageComponent = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={styles.searchContainer}>
+      {/* <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
           placeholder="Search categories..."
@@ -54,17 +55,19 @@ const HomePageComponent = ({navigation}: {navigation: any}) => {
           onChangeText={setSearchText}
           placeholderTextColor={'black'}
         />
-      </View>
+      </View> */}
       <View style={{padding: 10}}>
         <Text style={{fontSize: 24, fontWeight: 'bold', color: 'black'}}>
           Categories
         </Text>
       </View>
-      <ListWithIcons
-        items={items}
-        navigation={navigation}
-        handleClick={handleButtonClick}
-      />
+      <ScrollView>
+        <ListWithIcons
+          items={items}
+          navigation={navigation}
+          handleClick={handleButtonClick}
+        />
+      </ScrollView>
     </View>
   );
 };

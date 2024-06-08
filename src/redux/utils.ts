@@ -12,9 +12,14 @@ export const Category = {
 
 export const LargeCategoryName = {
   Agriculture: 'Agriculture',
+  CPVC: 'CPVC',
   CPVCPro: 'CPVC Pro',
-  FoamCore: 'Foam Core',
+  DrainMaster: 'Drain Master',
   DrainPro: 'Drain Pro',
+  UPVC: 'UPVC',
+  Silencio: 'Silencio',
+  FoamCore: 'Foam Core',
+  Drex: 'Drex',
 };
 
 export const getCategoryEnumValueByString = (
@@ -37,4 +42,12 @@ export const getCategoryLargeEnumValueByString = (
   return enumKey
     ? LargeCategoryName[enumKey as keyof typeof LargeCategoryName]
     : undefined;
+};
+
+export const filterArrayByString = (data: any[], search: string): any[] => {
+  if (search.length < 3) return data;
+
+  return data.filter(item =>
+    item?.title?.toLowerCase().includes(search.toLowerCase()),
+  );
 };

@@ -1,90 +1,107 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Pressable, StyleSheet, ScrollView} from 'react-native';
 import AddToCartCard from './addToCart';
-import {Button} from 'react-native-paper';
+import {Button, TextInput} from 'react-native-paper';
 import Layout from './layOut';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux';
+import {findSubCategoriesArray, toPascalCase} from '../products.config';
+import {filterArrayByString} from '../redux/utils';
 
 const SubProductList = ({navigation}: {navigation: any}) => {
   const currentCartList = useSelector(
     (state: RootState) => state.cart.currentCart,
   );
+  const currentCategory = useSelector(
+    (state: RootState) => state.cart.currentCategory,
+  );
 
-  const items = [
-    {productName: '90 degree elbow', price: '25'},
-    {productName: '45 degree elbow', price: '12.5'},
-    {productName: '120 degree elbow', price: '50'},
-  ];
+  const [selectedItem, setSelectedItem] = useState<number | null>(null);
+  const [filteredItems, setFilteredItems] = useState<any[]>([]);
+  const [items, setItems] = useState<any[]>([]);
+  const [searchText, setSearchText] = useState<string>('');
 
-  const [selectedItem, setselectedItem] = useState<number | null>(null);
   const handleNavigation = () => {
     navigation.navigate('home');
   };
+
+  useEffect(() => {
+    const data = findSubCategoriesArray(currentCategory);
+    setItems(data);
+    setFilteredItems(data);
+  }, [currentCategory]);
+
+  useEffect(() => {
+    setFilteredItems(filterArrayByString(items, searchText));
+  }, [searchText, items]);
+
   return (
-    <Layout headerText="Products" navigation={handleNavigation}>
+    <Layout
+      headerText={`Sub products for "${currentCategory}"`}
+      navigation={handleNavigation}>
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder={`Search ${currentCategory}`}
+          value={searchText}
+          onChangeText={setSearchText}
+          placeholderTextColor="black"
+        />
+      </View>
       <ScrollView>
         <View style={styles.container}>
-          {items.map((item, index) => (
+          {filteredItems.map((item, index) => (
             <Pressable key={index}>
               {index === selectedItem ? (
-                <AddToCartCard item={item} setSelectedItem={setselectedItem} />
+                <AddToCartCard item={item} setSelectedItem={setSelectedItem} />
               ) : (
                 <View
-                  onTouchEnd={() => {
-                    setselectedItem(index);
-                    // console.log('touching');
-                  }}
+                  onTouchEnd={() => setSelectedItem(index)}
                   style={styles.item}>
-                  <Text style={styles.text}>{item.productName}</Text>
+                  <Text style={styles.text}>{toPascalCase(item.title)}</Text>
                 </View>
               )}
             </Pressable>
           ))}
-          <View
-            style={{
-              marginTop: 10,
-              alignSelf: 'flex-end',
-              display: 'flex',
-              flexDirection: 'column',
-              marginRight: 20,
-            }}>
-            <Button
-              style={{justifyContent: 'space-between', marginBottom: 20}}
-              mode="contained"
-              disabled={currentCartList.items.length === 0}
-              onPress={() => {
-                navigation.navigate('cart');
-              }}>
-              {'Checkout'}
-            </Button>
-            <Button
-              onPress={() => {
-                navigation.navigate('home');
-              }}
-              style={{justifyContent: 'space-between'}}
-              mode="outlined">
-              {'Add more items'}
-            </Button>
-          </View>
         </View>
       </ScrollView>
+      <View style={styles.buttonContainer}>
+        <Button
+          style={styles.button}
+          mode="contained"
+          disabled={currentCartList.items.length === 0}
+          onPress={() => navigation.navigate('cart')}>
+          Checkout
+        </Button>
+        <Button
+          onPress={() => navigation.navigate('home')}
+          style={styles.button}
+          mode="outlined">
+          Add more items
+        </Button>
+      </View>
     </Layout>
   );
 };
 
 const styles = StyleSheet.create({
+  searchContainer: {
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    paddingBottom: 5,
+  },
+  searchInput: {
+    width: '100%',
+    height: 56,
+    borderWidth: 1,
+    borderColor: 'gray',
+    paddingHorizontal: 10,
+    color: 'black',
+  },
   container: {
     padding: 10,
     marginBottom: 20,
     alignItems: 'center',
-  },
-  headline: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: 'black',
-    alignSelf: 'center',
   },
   item: {
     width: 328,
@@ -96,6 +113,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    borderRadius: 6,
   },
   text: {
     color: 'black',
@@ -104,6 +122,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     letterSpacing: 0.5,
+  },
+  buttonContainer: {
+    marginTop: 10,
+    alignSelf: 'flex-end',
+    flexDirection: 'column',
+    marginRight: 20,
+  },
+  button: {
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
 });
 

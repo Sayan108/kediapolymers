@@ -93,10 +93,10 @@ function GeneratePDF() {
       <tr></tr>
       <tr>
         <th>Order Total</th>
-        <td>₹${
-          parseInt(currentOrder.totalAmount) +
-          parseInt(currentOrder.totalAmount) * 0.18
-        }</td>
+        <td>₹${(
+          parseFloat(currentOrder.totalAmount) +
+          parseFloat(currentOrder.totalAmount) * 0.18
+        ).toFixed(2)}</td>
       </tr>
     </table>
     <h1>Order Details</h1>
@@ -126,18 +126,18 @@ function GeneratePDF() {
       <tr></tr>
       <tr>
         <td>Sub Total</td>
-        <td>₹${parseInt(currentOrder.totalAmount)}</td>
+        <td>₹${parseFloat(currentOrder.totalAmount)}</td>
       </tr>
       <tr>
         <td>Tax</td>
-        <td>₹${parseInt(currentOrder.totalAmount) * 0.18}</td>
+        <td>₹${(parseFloat(currentOrder.totalAmount) * 0.18).toFixed(2)}</td>
       </tr>
       <tr>
         <td>Total</td>
-        <td>₹${
-          parseInt(currentOrder.totalAmount) +
-          parseInt(currentOrder.totalAmount) * 0.18
-        }</td>
+        <td>₹${(
+          parseFloat(currentOrder.totalAmount) +
+          parseFloat(currentOrder.totalAmount) * 0.18
+        ).toFixed(2)}</td>
       </tr>
       <tr></tr>
     </table>
@@ -147,12 +147,12 @@ function GeneratePDF() {
 `;
       const options = {
         html,
-        fileName: `invoice_kp_${currentOrder.id.substring(0, 6)}`,
-        directory: 'Invoices',
+        fileName: `INVOICE-KP-${currentOrder.id.substring(0, 6).toUpperCase()}`,
+        directory: 'Kedia_Polymers_Invoices',
       };
       const file = await RNHTMLtoPDF.convert(options);
       Alert.alert('Success', `PDF saved to ${file.filePath}`);
-      setCount(count + 1);
+
       setIsLoading(false);
     } catch (error: any) {
       Alert.alert('Error', error.message);

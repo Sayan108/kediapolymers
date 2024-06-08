@@ -4,19 +4,19 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Modal,
-  Pressable,
+  // Modal,
+  // Pressable,
 } from 'react-native';
-import {RadioButton, TextInput, Button} from 'react-native-paper';
+// import {RadioButton, TextInput, Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const CartItem = (props: any) => {
-  const dropdown = ['10 cm', '20 cm', '30 cm', '40 cm', '50 cm'];
+  // const dropdown = ['10 cm', '20 cm', '30 cm', '40 cm', '50 cm'];
   const {item} = props;
   // console.log(item, 'Dropdown');
   const [quantity, setQuantity] = useState<any>(item?.quantity ?? 1);
   const [showDropDown, setShowDropDown] = useState(false);
-  const [selectedItem, setSelectedItem] = useState('');
+  // const [selectedItem, setSelectedItem] = useState('');
 
   useEffect(() => {
     setQuantity(parseInt(item.quantity ?? 1));
@@ -99,12 +99,12 @@ const CartItem = (props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 5,
+    padding: 6,
     borderRadius: 10,
     borderBottomColor: 'gray',
     borderWidth: 1,
     borderColor: 'black',
-    width: 348,
+    width: 380,
     marginBottom: 15,
   },
   rowContainer: {
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   iconContainer: {
-    marginRight: 10,
+    // marginRight: 10,
   },
   productName: {
     fontSize: 18,

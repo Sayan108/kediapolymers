@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
   },
   cartItem: {
     marginBottom: 16,
+    flexWrap: 'wrap',
   },
   buttonContainer: {
     marginTop: 16,

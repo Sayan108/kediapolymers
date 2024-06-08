@@ -10,7 +10,6 @@ import Cartscreen from './cartScreen';
 const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
   const {id = 0} = route.params;
 
-  // console.log(id, 'id');
   const [index, setIndex] = React.useState(id ?? 0);
 
   const handleIndexChange = (params: number) => {
