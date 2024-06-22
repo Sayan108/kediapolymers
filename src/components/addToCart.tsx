@@ -29,17 +29,13 @@ const AddToCartCard = (props: any) => {
     count: parseInt(item?.quantity ?? 1),
     selectedItem: '',
     productName: '',
-    totalAmount: item?.Column3,
+    totalAmount: item?.unitPrice,
   });
   const [showDropDown, setShowDropDown] = useState(false);
   const [shouldDisable, setShouldDisable] = useState(true);
 
   const dispatch = useDispatch();
   const {currentCategory} = useSelector((state: RootState) => state.cart);
-
-  const {cartList} = useSelector((state: RootState) => state.cart);
-
-  const {currentCart} = useSelector((state: RootState) => state.cart);
 
   const handleQuantityChange = (text: string) => {
     if (/^\d+$/.test(text)) {
@@ -53,7 +49,7 @@ const AddToCartCard = (props: any) => {
     const newCartItem: ICartItem = {
       id: genetateUUID(),
       productName: cartItem.productName,
-      productPrice: item?.Column3.toString(),
+      productPrice: item?.unitPrice.toString(),
       totalPrice: cartItem.totalAmount.toString(),
       count: cartItem.count,
     };
@@ -65,16 +61,16 @@ const AddToCartCard = (props: any) => {
   useEffect(() => {
     if (cartItem.count > 0) {
       setShouldDisable(false);
-      // console.log(cartItem.count, parseFloat(item?.price as string), 'in cart');
+
       const name: string = `${
         LargeCategoryName[currentCategory as keyof typeof Category]
       } ${toPascalCase(item.title)}`;
       setCartItem(prevState => ({
         ...prevState,
         productName: name,
-        totalAmount: (cartItem.count * parseFloat(item?.Column3 ?? 0)).toFixed(
-          2,
-        ),
+        totalAmount: (
+          cartItem.count * parseFloat(item?.unitPrice ?? 0)
+        ).toFixed(2),
       }));
     } else setShouldDisable(true);
   }, [cartItem.count, cartItem.selectedItem]);

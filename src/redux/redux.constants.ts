@@ -57,6 +57,7 @@ export interface IOrder {
   totalAmount: string;
   items: ICartItem[];
   orderDate?: string;
+  billingAddress?: string;
 }
 
 export interface ICartState {

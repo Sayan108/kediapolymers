@@ -7,13 +7,21 @@ export interface Props {
   children: React.ReactNode;
   navigation: any;
   headerText: string;
+  hideButton?: boolean;
 }
 const Layout = (props: Props) => {
-  const {children, navigation, headerText} = props;
+  const {children, navigation, headerText, hideButton} = props;
   return (
     <View style={styles.container}>
       <Appbar.Header style={styles.header}>
-        <Icon name="arrow-left" size={35} color="black" onPress={navigation} />
+        {hideButton === undefined ? (
+          <Icon
+            name="arrow-left"
+            size={35}
+            color="black"
+            onPress={navigation}
+          />
+        ) : null}
         <Text style={styles.title}>{headerText}</Text>
       </Appbar.Header>
       {children}

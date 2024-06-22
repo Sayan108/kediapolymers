@@ -73,6 +73,12 @@ const TableExample = ({navigation, route}: {navigation: any; route: any}) => {
           </DataTable.Row>
         </DataTable>
         <View style={{padding: 15}}>
+          <Text style={styles.billingAddressTitle}>Billing Address</Text>
+          <Text style={styles.billingAddressText}>
+            {currentOrder.billingAddress}
+          </Text>
+        </View>
+        <View style={{padding: 15}}>
           <GeneratePDF />
         </View>
       </View>
@@ -88,5 +94,14 @@ const styles = StyleSheet.create({
   },
   tableHeader: {
     backgroundColor: '#DCDCDC',
+  },
+  billingAddressTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 20,
+  },
+  billingAddressText: {
+    fontSize: 16,
+    marginTop: 5,
   },
 });

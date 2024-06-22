@@ -9,70 +9,67 @@ import {
   setInitialCurrentCart,
   updateCurrentCategory,
 } from '../../redux/silces/cart.slice';
-import {ICart, ICartItem} from '../../redux/redux.constants';
+import {ICart} from '../../redux/redux.constants';
 import {genetateUUID} from '../../redux/utils';
 import {allItems as items} from '../../products.config';
+import Layout from '../layOut';
 
 const HomePageComponent = ({navigation}: {navigation: any}) => {
-  const {cartList} = useSelector((state: RootState) => state.cart);
-  const {currentCart} = useSelector((state: RootState) => state.cart);
+  const {cartList, currentCart} = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState('');
 
-  // const items: Item[] = [
-  //   {id: 1, text: 'Agriculture', iconName: 'accessibility'},
-  //   {id: 2, text: 'CPVCPro', iconName: 'alarm'},
-  //   {id: 3, text: 'FoamCore', iconName: 'alarm'},
-  //   {id: 4, text: 'DrainPro', iconName: 'build'},
-  // ];
-
   const handleButtonClick = (item: Item) => {
-    // console.log(genetateUUID());
     dispatch(updateCurrentCategory(item.text));
     const cartItem: ICart = {
       id: genetateUUID().toString(),
       totalAmount: '0',
       items: [],
     };
-    // if (cartList.length === 0) {
-    //   dispatch(addNewCartInList(cartItem));
-    // }
+
     if (currentCart.id === '') {
       dispatch(setInitialCurrentCart(cartItem));
     }
     navigation.navigate('subproduct');
   };
 
-  // Filter items based on search text
+  const filteredItems = items.filter(item =>
+    item.text.toLowerCase().includes(searchText.toLowerCase()),
+  );
 
   return (
-    <View style={{flex: 1}}>
-      {/* <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search categories..."
-          value={searchText}
-          onChangeText={setSearchText}
-          placeholderTextColor={'black'}
-        />
-      </View> */}
-      <View style={{padding: 10}}>
-        <Text style={{fontSize: 24, fontWeight: 'bold', color: 'black'}}>
-          Categories
-        </Text>
-      </View>
-      <ScrollView>
-        <ListWithIcons
-          items={items}
-          navigation={navigation}
-          handleClick={handleButtonClick}
-        />
-      </ScrollView>
+    <View style={{padding: 10, flex: 1}}>
+      <Text style={styles.headerText}>Kedia Polymers</Text>
+      <Layout headerText="Categories" navigation={() => {}} hideButton>
+        <View style={{flex: 1}}>
+          {/* <View style={styles.searchContainer}>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search categories..."
+              value={searchText}
+              onChangeText={setSearchText}
+              placeholderTextColor={'black'}
+            />
+          </View> */}
+          <ScrollView>
+            <ListWithIcons
+              items={filteredItems}
+              navigation={navigation}
+              handleClick={handleButtonClick}
+            />
+          </ScrollView>
+        </View>
+      </Layout>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'black',
+  },
   searchContainer: {
     paddingHorizontal: 10,
     paddingTop: 10,
