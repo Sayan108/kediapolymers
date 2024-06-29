@@ -1,6 +1,7 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 import {IconProps} from 'react-native-paper/lib/typescript/components/MaterialCommunityIcon';
 import {
+  ICartItem,
   IProduct,
   IProductState,
   category,
@@ -56,7 +57,7 @@ export const productSLice = createSlice({
 
     addNewCategorySuccess: (
       state: IProductState,
-      action: PayloadAction<IProduct>,
+      action: PayloadAction<category>,
     ) => {
       return {
         ...state,
@@ -75,6 +76,41 @@ export const productSLice = createSlice({
         error: action.payload,
       };
     },
+
+    productListRequested: (
+      state: IProductState,
+      action: PayloadAction<string>,
+    ) => {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    },
+
+    productListSuccess: (
+      state: IProductState,
+      action: PayloadAction<IProduct[]>,
+    ) => {
+      return {
+        ...state,
+        isLoading: false,
+        productList: action.payload,
+      };
+    },
+
+    productListFailed: (state: IProductState, action: PayloadAction<any>) => {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
+    },
+
+    clearProductS: (state: IProductState) => {
+      return {
+        ...productInitialState,
+      };
+    },
   },
 });
 export const {
@@ -85,6 +121,10 @@ export const {
   addNewCategorySuccess,
   addNewCategoryFailed,
   setCurrentCategory,
+  productListRequested,
+  productListSuccess,
+  productListFailed,
+  clearProductS,
 } = productSLice.actions;
 
 export const productReducer = productSLice.reducer;

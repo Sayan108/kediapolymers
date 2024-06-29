@@ -77,12 +77,12 @@ export interface category {
 }
 
 export interface IProduct {
-  id: string;
-  name: string;
-  dimensions: string[];
-  price: string;
-  description: string;
-  category: string;
+  productId: string;
+  title: string;
+  dimensions?: string[];
+  unitPrice: number;
+  description?: string;
+  categoryId: string;
 }
 
 export interface IProductState {

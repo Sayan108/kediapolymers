@@ -7,7 +7,7 @@ export const baseURLS = {
 export const endPoints = {
   logIn: '/user/login',
   categoryList: '/category',
-  productData: '',
+  productList: '/product/productList',
   createOrder: '',
   orderList: '',
 };

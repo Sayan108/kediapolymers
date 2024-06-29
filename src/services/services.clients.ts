@@ -3,7 +3,8 @@ import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {activeURL} from './constants';
 import {store} from '../redux';
 const state = store.getState();
-const token = state.auth.userDetails?.accessToken;
+const token = state.auth.userDetails?.accessToken ?? '';
+//console.log(token, 'getting token');
 const axiosConfig: AxiosRequestConfig = {
   baseURL: activeURL,
   headers: {
@@ -28,7 +29,7 @@ baseClient.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // console.log('Request configuration headers:', config.headers);
+    // //console.log('Request configuration headers:', config.headers);
 
     return config;
   },

@@ -3,22 +3,32 @@ import {View, Text, Pressable, StyleSheet, ScrollView} from 'react-native';
 import AddToCartCard from './addToCart';
 import {Button, TextInput} from 'react-native-paper';
 import Layout from './layOut';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux';
 import {findSubCategoriesArray, toPascalCase} from '../products.config';
 import {filterArrayByString} from '../redux/utils';
+import {productListRequested} from '../redux/silces/product.slice';
+import {IProduct} from '../redux/redux.constants';
 
 const SubProductList = ({navigation}: {navigation: any}) => {
+  const dispatch = useDispatch();
   const currentCartList = useSelector(
     (state: RootState) => state.cart.currentCart,
   );
   const currentCategory = useSelector(
     (state: RootState) => state.cart.currentCategory,
   );
+  const categoryId = useSelector(
+    (state: RootState) => state.product.currentCategory?.id,
+  );
+
+  const {productList, isLoading} = useSelector(
+    (state: RootState) => state.product,
+  );
 
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
-  const [filteredItems, setFilteredItems] = useState<any[]>([]);
-  const [items, setItems] = useState<any[]>([]);
+  const [filteredItems, setFilteredItems] = useState<IProduct[]>([]);
+  const [items, setItems] = useState<IProduct[]>([]);
   const [searchText, setSearchText] = useState<string>('');
 
   const handleNavigation = () => {
@@ -26,9 +36,11 @@ const SubProductList = ({navigation}: {navigation: any}) => {
   };
 
   useEffect(() => {
+    dispatch(productListRequested(categoryId ?? ''));
     const data = findSubCategoriesArray(currentCategory);
-    setItems(data);
-    setFilteredItems(data);
+
+    setItems(productList);
+    setFilteredItems(productList);
   }, [currentCategory]);
 
   useEffect(() => {
@@ -51,7 +63,7 @@ const SubProductList = ({navigation}: {navigation: any}) => {
       <ScrollView>
         <View style={styles.container}>
           {filteredItems.map((item, index) => (
-            <Pressable key={index}>
+            <Pressable key={item?.productId}>
               {index === selectedItem ? (
                 <AddToCartCard item={item} setSelectedItem={setSelectedItem} />
               ) : (

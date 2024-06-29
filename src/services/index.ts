@@ -8,3 +8,7 @@ export const login = (payload: any) => {
 export const getCategoryList = () => {
   return baseClient.get(endPoints.categoryList);
 };
+
+export const getProductList = (params: any) => {
+  return baseClient.get(endPoints.productList, {params});
+};

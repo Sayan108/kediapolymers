@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const CartItem = (props: any) => {
   // const dropdown = ['10 cm', '20 cm', '30 cm', '40 cm', '50 cm'];
   const {item} = props;
-  // console.log(item, 'Dropdown');
+  // //console.log(item, 'Dropdown');
   const [quantity, setQuantity] = useState<any>(item?.quantity ?? 1);
   const [showDropDown, setShowDropDown] = useState(false);
   // const [selectedItem, setSelectedItem] = useState('');

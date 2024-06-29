@@ -3,6 +3,9 @@ import {authRequested, authSuccess, logOut} from '../redux/silces/auth.silce';
 
 import {IUserDetails} from '../redux/redux.constants';
 import {login} from '../services';
+import {clearCart} from '../redux/silces/cart.slice';
+import {clearOrder} from '../redux/silces/order.slice';
+import {clearProductS} from '../redux/silces/product.slice';
 
 const useAuthService = () => {
   const dispatch = useDispatch();
@@ -10,12 +13,12 @@ const useAuthService = () => {
   const handleLogIn = async (payload: any, navigation: any) => {
     navigation.navigate('home');
     dispatch(authRequested());
-    console.log('here');
+    //console.log('here');
 
     try {
-      console.log('trying');
+      //console.log('trying');
       const response = await login(payload);
-      //  console.log(response?.data, 'here');
+      //  //console.log(response?.data, 'here');
       const data = response?.data?.data;
 
       const userObject: IUserDetails = {
@@ -26,7 +29,7 @@ const useAuthService = () => {
         userName: data.username ?? '',
         phoneNumber: data?.phoneNumber,
       };
-      console.log(userObject, 'getting data');
+      //console.log(userObject, 'getting data');
       dispatch(authSuccess(userObject));
 
       navigation.navigate('home');
@@ -38,6 +41,9 @@ const useAuthService = () => {
 
   const handleLogOut = () => {
     dispatch(logOut());
+    dispatch(clearCart());
+    dispatch(clearOrder());
+    dispatch(clearProductS());
   };
 
   return {

@@ -29,6 +29,11 @@ export const orderSlice = createSlice({
         orderList: [action.payload, ...state.orderList],
       };
     },
+    clearOrder: (state: IOrderState) => {
+      return {
+        ...orderInitialState,
+      };
+    },
 
     removeFromOrderList: (state: IOrderState, action: PayloadAction<any>) => {
       return {
@@ -40,7 +45,11 @@ export const orderSlice = createSlice({
     },
   },
 });
-export const {setCurrentOrder, addNewOrderInList, removeFromOrderList} =
-  orderSlice.actions;
+export const {
+  setCurrentOrder,
+  addNewOrderInList,
+  removeFromOrderList,
+  clearOrder,
+} = orderSlice.actions;
 
 export const orderReducer = orderSlice.reducer;

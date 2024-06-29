@@ -15,6 +15,7 @@ import {ICartItem} from '../redux/redux.constants';
 import {
   Category,
   LargeCategoryName,
+  UppercaseLargeCategoryName,
   genetateUUID,
   getCategoryEnumValueByString,
 } from '../redux/utils';
@@ -63,7 +64,9 @@ const AddToCartCard = (props: any) => {
       setShouldDisable(false);
 
       const name: string = `${
-        LargeCategoryName[currentCategory as keyof typeof Category]
+        UppercaseLargeCategoryName[
+          currentCategory as keyof typeof UppercaseLargeCategoryName
+        ]
       } ${toPascalCase(item.title)}`;
       setCartItem(prevState => ({
         ...prevState,

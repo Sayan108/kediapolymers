@@ -34,7 +34,7 @@ export const authSlice = createSlice({
     // },
 
     otpSuccess: (state: IAuthState, action: PayloadAction<any>) => {
-      // console.log(action.payload, 'data in slice');
+      // //console.log(action.payload, 'data in slice');
       return {
         ...state,
         userDetails: {...state.userDetails, ...action.payload.data},
@@ -56,7 +56,7 @@ export const authSlice = createSlice({
       };
     },
     authSuccess: (state: IAuthState, action: PayloadAction<IUserDetails>) => {
-      console.log(action.payload);
+      //console.log(action.payload);
       return {
         ...state,
         isAuthenticated: true,
