@@ -71,6 +71,34 @@ export interface IOrderState {
   currentOrder: IOrder;
 }
 
+export interface category {
+  id: string;
+  name: string;
+}
+
+export interface IProduct {
+  id: string;
+  name: string;
+  dimensions: string[];
+  price: string;
+  description: string;
+  category: string;
+}
+
+export interface IProductState {
+  isLoading: boolean;
+  productList: IProduct[];
+  categoryList: category[];
+  currentCategory: category | null;
+}
+
+export const productInitialState: IProductState = {
+  isLoading: false,
+  productList: [],
+  categoryList: [],
+  currentCategory: null,
+};
+
 export const cartInitialState: ICartState = {
   currentCategory: '',
   cartList: [],

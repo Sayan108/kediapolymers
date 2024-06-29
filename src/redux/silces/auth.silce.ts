@@ -2,6 +2,7 @@ import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 import {
   IAuthState,
   IAuthStateInitialState,
+  IUserDetails,
   OTPSuccessPayload,
 } from '../redux.constants';
 
@@ -54,11 +55,13 @@ export const authSlice = createSlice({
         isLoading: true,
       };
     },
-    authSuccess: (state: IAuthState, action: PayloadAction<any>) => {
+    authSuccess: (state: IAuthState, action: PayloadAction<IUserDetails>) => {
+      console.log(action.payload);
       return {
         ...state,
         isAuthenticated: true,
         isLoading: false,
+        userDetails: action.payload,
       };
     },
     authFailed: (state: IAuthState, action: PayloadAction<any>) => {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, StyleSheet, ScrollView} from 'react-native';
 import ListWithIcons, {Item} from './listWithIcons';
 import {useDispatch, useSelector} from 'react-redux';
@@ -9,18 +9,29 @@ import {
   setInitialCurrentCart,
   updateCurrentCategory,
 } from '../../redux/silces/cart.slice';
-import {ICart} from '../../redux/redux.constants';
+import {ICart, category} from '../../redux/redux.constants';
 import {genetateUUID} from '../../redux/utils';
 import {allItems as items} from '../../products.config';
 import Layout from '../layOut';
+import {Button} from 'react-native-paper';
+import useAuthService from '../../hooks/useAuthServices';
+
+import {
+  categoryListRequested,
+  setCurrentCategory,
+} from '../../redux/silces/product.slice';
 
 const HomePageComponent = ({navigation}: {navigation: any}) => {
   const {cartList, currentCart} = useSelector((state: RootState) => state.cart);
+  const {categoryList, isLoading} = useSelector(
+    (state: RootState) => state.product,
+  );
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState('');
 
-  const handleButtonClick = (item: Item) => {
-    dispatch(updateCurrentCategory(item.text));
+  const handleButtonClick = (item: category) => {
+    dispatch(updateCurrentCategory(item.name));
+    dispatch(setCurrentCategory(item));
     const cartItem: ICart = {
       id: genetateUUID().toString(),
       totalAmount: '0',
@@ -33,14 +44,24 @@ const HomePageComponent = ({navigation}: {navigation: any}) => {
     navigation.navigate('subproduct');
   };
 
-  const filteredItems = items.filter(item =>
-    item.text.toLowerCase().includes(searchText.toLowerCase()),
+  const filteredItems = categoryList.filter(item =>
+    item.name.toLowerCase().includes(searchText.toLowerCase()),
   );
+
+  useEffect(() => {
+    dispatch(categoryListRequested());
+  }, []);
 
   return (
     <View style={{padding: 10, flex: 1}}>
       <Text style={styles.headerText}>Kedia Polymers</Text>
       <Layout headerText="Categories" navigation={() => {}} hideButton>
+        {/* <Button
+          onPress={() => {
+            // handleLogOut();
+          }}>
+          Logout
+        </Button> */}
         <View style={{flex: 1}}>
           {/* <View style={styles.searchContainer}>
             <TextInput

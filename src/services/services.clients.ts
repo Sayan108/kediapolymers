@@ -2,11 +2,13 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {activeURL} from './constants';
 import {store} from '../redux';
-
+const state = store.getState();
+const token = state.auth.userDetails?.accessToken;
 const axiosConfig: AxiosRequestConfig = {
   baseURL: activeURL,
   headers: {
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
   },
 };
 
@@ -22,9 +24,6 @@ export const authClient: AxiosInstance = axios.create(axiosAuthConfig);
 
 baseClient.interceptors.request.use(
   config => {
-    const state = store.getState();
-    const token = state.auth.userDetails?.accessToken;
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

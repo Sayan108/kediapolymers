@@ -3,8 +3,10 @@ import {View, Text, Pressable, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Assuming you're using Material Icons for icons
 import {
   LargeCategoryName,
+  UppercaseLargeCategoryName,
   getCategoryLargeEnumValueByString,
 } from '../../redux/utils';
+import {category} from '../../redux/redux.constants';
 
 export interface Item {
   id: number;
@@ -13,22 +15,26 @@ export interface Item {
 }
 
 interface Props {
-  items: Item[];
+  items: category[];
   navigation?: any;
   handleClick?: any;
 }
 
 const ListItem: React.FC<{
-  item: Item;
+  item: category;
   navigation: any;
   handleButtonClick: any;
 }> = ({item, navigation, handleButtonClick}) => (
   <View style={styles.itemContainer}>
     <Pressable onPress={() => handleButtonClick(item)}>
       <View style={styles.item}>
-        <Icon name={item.iconName} size={24} color="black" />
+        <Icon name={'add-shopping-cart'} size={24} color="black" />
         <Text style={styles.text}>
-          {LargeCategoryName[item.text as keyof typeof LargeCategoryName]}
+          {
+            UppercaseLargeCategoryName[
+              item.name as keyof typeof UppercaseLargeCategoryName
+            ]
+          }
         </Text>
       </View>
     </Pressable>

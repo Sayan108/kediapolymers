@@ -1,41 +1,38 @@
 import {useDispatch} from 'react-redux';
-import {
-  authFailed,
-  authRequested,
-  authSuccess,
-  logOut,
-  otpFailed,
-  otpRequested,
-  otpSuccess,
-} from '../redux/silces/auth.silce';
+import {authRequested, authSuccess, logOut} from '../redux/silces/auth.silce';
 
 import {IUserDetails} from '../redux/redux.constants';
 import {login} from '../services';
-import {AxiosResponse} from 'axios';
 
 const useAuthService = () => {
   const dispatch = useDispatch();
 
   const handleLogIn = async (payload: any, navigation: any) => {
+    navigation.navigate('home');
     dispatch(authRequested());
+    console.log('here');
+
     try {
-      const {
-        data: {data},
-      }: AxiosResponse = await login(payload);
+      console.log('trying');
+      const response = await login(payload);
+      //  console.log(response?.data, 'here');
+      const data = response?.data?.data;
 
       const userObject: IUserDetails = {
         userID: data.userId ?? '',
         //userName: username??'',
         fullname: data.fullname ?? '',
         accessToken: data.accessToken,
-        userName: '',
+        userName: data.username ?? '',
         phoneNumber: data?.phoneNumber,
       };
-      // console.log(userObject, 'getting data');
+      console.log(userObject, 'getting data');
       dispatch(authSuccess(userObject));
+
       navigation.navigate('home');
-    } catch (error) {
-      dispatch(authFailed(error));
+    } catch (error: any) {
+      // dispatch(authFailed(error[0].value));
+      console.error(error);
     }
   };
 

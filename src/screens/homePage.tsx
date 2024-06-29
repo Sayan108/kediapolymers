@@ -1,30 +1,30 @@
 import * as React from 'react';
-import {BottomNavigation, TouchableRipple} from 'react-native-paper';
-
-import {StyleSheet, Text, View} from 'react-native';
+import {BottomNavigation} from 'react-native-paper';
+import {StyleSheet} from 'react-native';
 import HomePageComponent from '../components/homePageComponent';
-
 import Orderscreen from './orderSccreen';
 import Cartscreen from './cartScreen';
+import {Route} from '@react-navigation/native';
+import {BaseRoute} from 'react-native-paper/lib/typescript/components/BottomNavigation/BottomNavigation';
 
 const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
   const {id = 0} = route.params;
 
-  const [index, setIndex] = React.useState(id ?? 0);
+  const [index, setIndex] = React.useState(id);
 
-  const handleIndexChange = (params: number) => {
-    setIndex(params);
+  const handleIndexChange = (index: number) => {
+    setIndex(index);
   };
-  const homePageRoute = () => <HomePageComponent navigation={navigation} />;
 
+  const homePageRoute = () => <HomePageComponent navigation={navigation} />;
   const cartPageRoute = () => (
     <Cartscreen navigation={navigation} handleBack={handleIndexChange} />
   );
-  const OrdersPage = () => (
+  const ordersPageRoute = () => (
     <Orderscreen navigation={navigation} handleBack={handleIndexChange} />
   );
 
-  const [routes] = React.useState([
+  const routes: BaseRoute[] = [
     {
       key: 'home',
       title: 'Home',
@@ -43,16 +43,18 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
       focusedIcon: 'timer-sand-full',
       unfocusedIcon: 'timer-sand-empty',
     },
-  ]);
+  ];
 
   const renderScene = BottomNavigation.SceneMap({
     home: homePageRoute,
     cart: cartPageRoute,
-    orders: OrdersPage,
+    orders: ordersPageRoute,
   });
 
   React.useEffect(() => {
-    setIndex(id);
+    if (id !== index) {
+      setIndex(id);
+    }
   }, []);
 
   return (
@@ -61,8 +63,6 @@ const HomeScreen = ({navigation, route}: {navigation: any; route: any}) => {
       onIndexChange={handleIndexChange}
       renderScene={renderScene}
       style={styles.bottomNavigation}
-      // activeColor="rgba(245, 71, 73, 0.1)"
-      // activeIndicatorStyle={{shadowColor: 'rgba(245, 71, 73, 0.1)'}}
     />
   );
 };

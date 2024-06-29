@@ -22,6 +22,18 @@ export const LargeCategoryName = {
   Drex: 'Drex',
 };
 
+export const UppercaseLargeCategoryName = {
+  AGRICULTURE: 'Agriculture',
+  CPVC: 'CPVC',
+  CPVCPRO: 'CPVC Pro',
+  DRAINMASTER: 'Drain Master',
+  DRAINPRO: 'Drain Pro',
+  UPVC: 'UPVC',
+  SILENCIO: 'Silencio',
+  FOAMCORE: 'Foam Core',
+  DREX: 'Drex',
+};
+
 export const getCategoryEnumValueByString = (
   stringValue: string,
 ): string | undefined => {

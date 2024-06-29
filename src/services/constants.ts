@@ -1,11 +1,12 @@
 export const baseURLS = {
-  devBaseURL: '',
+  devBaseURL: 'https://kediapolymner-backend.onrender.com/api/kediapolymer',
   stageBaseURL: '',
   productionBaseURL: '',
 };
 
 export const endPoints = {
-  logIn: '',
+  logIn: '/user/login',
+  categoryList: '/category',
   productData: '',
   createOrder: '',
   orderList: '',
