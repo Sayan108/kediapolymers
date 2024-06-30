@@ -27,6 +27,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {
   categoryListRequested,
+  productListRequested,
   setCurrentCategory,
 } from '../../redux/silces/product.slice';
 import CustomModal from '../commonModal';
@@ -57,6 +58,7 @@ const HomePageComponent = ({navigation}: {navigation: any}) => {
     if (currentCart.id === '') {
       dispatch(setInitialCurrentCart(cartItem));
     }
+    dispatch(productListRequested(item?.id ?? ''));
     navigation.navigate('subproduct');
   };
 

@@ -26,7 +26,6 @@ export const cartSlice = createSlice({
       state: ICartState,
       action: PayloadAction<ICartItem>,
     ) => {
-      // //console.log(typeof action.payload, 'in slice');
       const totalAmount = (
         parseFloat(state.currentCart.totalAmount) +
         parseFloat(action.payload.totalPrice)

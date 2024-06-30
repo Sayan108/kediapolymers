@@ -40,7 +40,7 @@ export const getCategoryEnumValueByString = (
   const enumKey = Object.keys(Category).find(
     key => Category[key as keyof typeof Category] === stringValue,
   );
-  // //console.log(enumKey);
+
   return enumKey ? Category[enumKey as keyof typeof Category] : undefined;
 };
 
@@ -50,7 +50,7 @@ export const getCategoryLargeEnumValueByString = (
   const enumKey = Object.keys(LargeCategoryName).find(
     key => LargeCategoryName[key as keyof typeof Category] === stringValue,
   );
-  // //console.log(enumKey);
+
   return enumKey
     ? LargeCategoryName[enumKey as keyof typeof LargeCategoryName]
     : undefined;

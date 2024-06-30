@@ -21,7 +21,6 @@ const Cartscreen = ({
     navigation.navigate('cart', {id: item.id});
   };
 
-  // //console.log(cartList, 'cartlist');
   return (
     <Layout
       headerText="Cart "

@@ -106,6 +106,37 @@ export const productSLice = createSlice({
       };
     },
 
+    addNewProductInListRequested: (
+      state: IProductState,
+      action: PayloadAction<any>,
+    ) => {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    },
+    addNewProductInListSuccess: (
+      state: IProductState,
+      action: PayloadAction<IProduct>,
+    ) => {
+      return {
+        ...state,
+        isLoading: false,
+        productList: [...state.productList, action.payload],
+      };
+    },
+
+    addNewProductInListFailed: (
+      state: IProductState,
+      action: PayloadAction<any>,
+    ) => {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
+    },
+
     clearProductS: (state: IProductState) => {
       return {
         ...productInitialState,
@@ -124,6 +155,9 @@ export const {
   productListRequested,
   productListSuccess,
   productListFailed,
+  addNewProductInListFailed,
+  addNewProductInListRequested,
+  addNewProductInListSuccess,
   clearProductS,
 } = productSLice.actions;
 

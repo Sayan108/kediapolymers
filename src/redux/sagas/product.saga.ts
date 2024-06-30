@@ -1,9 +1,12 @@
 import {ActionType} from 'typesafe-actions';
 
-import {getCategoryList, getProductList} from '../../services';
+import {addProduct, getCategoryList, getProductList} from '../../services';
 import {AxiosResponse} from 'axios';
 import {call, put, takeLatest} from 'redux-saga/effects';
 import {
+  addNewProductInListFailed,
+  addNewProductInListRequested,
+  addNewProductInListSuccess,
   categoryListFailed,
   categoryListRequested,
   categoryListSuccess,
@@ -12,11 +15,11 @@ import {
   productListSuccess,
 } from '../silces/product.slice';
 import {ICart, ICartItem, IProduct, category} from '../redux.constants';
+import {Alert} from 'react-native';
 
 function* getCategoryListData(
   action: ActionType<typeof categoryListRequested>,
 ): Generator<any, void, any> {
-  //console.log('calling the saga');
   try {
     // API call logic here
     const response: AxiosResponse = yield call(getCategoryList);
@@ -36,19 +39,19 @@ function* getCategoryListData(
   } catch (error) {
     console.error(error);
     yield put(categoryListFailed('Something went wrong'));
+    Alert.alert('Something went wrong');
   }
 }
 
 function* getProductListData(
   action: ActionType<typeof productListRequested>,
 ): Generator<any, void, any> {
-  console.log('calling the saga');
   try {
     // API call logic here
     const response: AxiosResponse = yield call(getProductList, {
       categoryid: action.payload,
     });
-    console.log(response.data.data);
+
     const responseData = response?.data?.data;
     const data: IProduct[] = []; // Create a new array to store the transformed data.
     for (let i = 0; i < responseData.length; i++) {
@@ -67,6 +70,33 @@ function* getProductListData(
     yield put(productListSuccess(data));
   } catch (error) {
     yield put(productListFailed('Something went wrong'));
+    Alert.alert('Something went wrong');
+  }
+}
+
+function* addNewProduct(
+  action: ActionType<typeof addNewProductInListRequested>,
+): Generator<any, void, any> {
+  try {
+    // API call logic here
+    const response: AxiosResponse = yield call(addProduct, action.payload);
+
+    const responseData = response?.data?.data[0];
+
+    const newObj: IProduct = {
+      productId: responseData.productId,
+      title: responseData.title,
+
+      unitPrice: responseData.unitPrice,
+
+      categoryId: responseData.categoryId,
+    };
+
+    yield put(addNewProductInListSuccess(newObj));
+  } catch (error) {
+    console.error(error);
+    yield put(addNewProductInListFailed('Something went wrong'));
+    Alert.alert('Something went wrong');
   }
 }
 
@@ -76,4 +106,8 @@ export function* watchFetchCategoryList() {
 
 export function* watchFetchProductList() {
   yield takeLatest(productListRequested.type, getProductListData);
+}
+
+export function* watchAddProduct() {
+  yield takeLatest(addNewProductInListRequested.type, addNewProduct);
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Modal,
   View,
@@ -9,15 +9,32 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useAuthService from '../hooks/useAuthServices';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../redux';
+import {addNewProductInListRequested} from '../redux/silces/product.slice';
+import NetworkLogger from 'react-native-network-logger/lib/typescript/src/components/NetworkLogger';
 
 interface CustomModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-  type: 'logout' | 'profile' | 'addDealer';
+  type: 'logout' | 'profile' | 'addDealer' | 'addProduct';
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({open, setOpen, type}) => {
   const {handleLogOut} = useAuthService();
+  const userData = useSelector((state: RootState) => state.auth.userDetails);
+  const category = useSelector(
+    (state: RootState) => state.product.currentCategory,
+  );
+  const [newProductData, setnewProductData] = useState({
+    title: '',
+    unitPrice: '0',
+    categoryId: category?.id,
+    description: '',
+  });
+
+  const dispatch = useDispatch();
+
   const handleLogoutClick = () => {
     // handle logout logic
     handleLogOut();
@@ -27,6 +44,16 @@ const CustomModal: React.FC<CustomModalProps> = ({open, setOpen, type}) => {
   const handleAddDealer = () => {
     // handle add dealer logic
     setOpen(false);
+  };
+
+  const handleAddNewProduct = () => {
+    // handle add dealer logic
+    dispatch(addNewProductInListRequested([newProductData]));
+    setOpen(false);
+  };
+
+  const handleTextChange = (title: string, value: string) => {
+    setnewProductData({...newProductData, [title]: value});
   };
 
   const renderContent = () => {
@@ -58,19 +85,21 @@ const CustomModal: React.FC<CustomModalProps> = ({open, setOpen, type}) => {
             <Text style={styles.modalHeader}>My profile</Text>
             <TextInput
               style={styles.textInput}
-              value="John Doe"
+              value={userData?.fullname ?? 'No name provided'}
               editable={false}
               placeholder="Name"
             />
             <TextInput
               style={styles.textInput}
-              value="john.doe@example.com"
+              value={
+                userData?.email ?? userData?.userName ?? 'No email provided'
+              }
               editable={false}
               placeholder="Email"
             />
             <TextInput
               style={styles.textInput}
-              value="123-456-7890"
+              value={userData?.phoneNumber ?? 'No mobile number provided'}
               editable={false}
               placeholder="Phone Number"
             />
@@ -102,6 +131,42 @@ const CustomModal: React.FC<CustomModalProps> = ({open, setOpen, type}) => {
             </TouchableOpacity>
           </View>
         );
+
+      case 'addProduct':
+        return (
+          <View>
+            <Text style={styles.modalHeader}>Add new product</Text>
+            <TextInput
+              nativeID="title"
+              style={styles.textInput}
+              placeholder="Product name*"
+              placeholderTextColor="#aaa"
+              value={newProductData.title}
+              onChangeText={value => handleTextChange('title', value)}
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Price*"
+              placeholderTextColor="#aaa"
+              inputMode="numeric"
+              value={newProductData.unitPrice}
+              onChangeText={value => handleTextChange('unitPrice', value)}
+            />
+            <TextInput
+              style={styles.textInput}
+              placeholder="Description(optional)"
+              placeholderTextColor="#aaa"
+              value={newProductData.description}
+              onChangeText={value => handleTextChange('description', value)}
+            />
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleAddNewProduct}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        );
+
       default:
         return null;
     }
@@ -169,8 +234,8 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   textInput: {
-    width: 200,
-    height: 40,
+    width: 300,
+    height: 45,
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,

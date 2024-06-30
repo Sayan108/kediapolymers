@@ -54,13 +54,14 @@ const Cartpage = ({navigation, route}: {navigation: any; route: any}) => {
               }}>
               {'Confirm order'}
             </Button>
-
-            <Button
-              style={styles.button}
-              mode="outlined"
-              onPress={() => setShowDropDown(true)}>
-              {'Save as draft'}
-            </Button>
+            {!currentCart?.cartName && (
+              <Button
+                style={styles.button}
+                mode="outlined"
+                onPress={() => setShowDropDown(true)}>
+                {'Save as draft'}
+              </Button>
+            )}
           </View>
 
           <Modal

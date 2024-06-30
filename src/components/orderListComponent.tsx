@@ -18,7 +18,6 @@ interface OrderListProps {
 }
 
 const OrderList: React.FC<OrderListProps> = ({orders, onItemPress}) => {
-  // //console.log(orders, 'orders');
   return (
     <View style={styles.container}>
       {orders.length !== 0 ? (

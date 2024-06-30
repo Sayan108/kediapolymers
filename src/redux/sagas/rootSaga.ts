@@ -1,6 +1,16 @@
 import {all} from 'redux-saga/effects';
-import {watchFetchCategoryList, watchFetchProductList} from './product.saga';
+import {
+  watchAddProduct,
+  watchFetchCategoryList,
+  watchFetchProductList,
+} from './product.saga';
+import {watchAddNewOrder} from './order.saga';
 
 export default function* rootSaga() {
-  yield all([watchFetchCategoryList(), watchFetchProductList()]);
+  yield all([
+    watchFetchCategoryList(),
+    watchFetchProductList(),
+    watchAddNewOrder(),
+    watchAddProduct(),
+  ]);
 }

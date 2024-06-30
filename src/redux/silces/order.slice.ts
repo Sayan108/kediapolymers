@@ -14,6 +14,37 @@ export const orderSlice = createSlice({
         currentOrder: action.payload,
       };
     },
+    addNewOrderInIListRequested: (
+      state: IOrderState,
+      action: PayloadAction<any>,
+    ) => {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    },
+
+    addNewOrderInListSuccess: (
+      state: IOrderState,
+      action: PayloadAction<IOrder>,
+    ) => {
+      return {
+        ...state,
+        isLoading: false,
+        orderList: [...state.orderList, action.payload],
+      };
+    },
+
+    addNewOrderInListFailed: (
+      state: IOrderState,
+      action: PayloadAction<any>,
+    ) => {
+      return {
+        ...state,
+        isLoading: false,
+        errormessege: action.payload,
+      };
+    },
 
     addNewOrderInList: (state: IOrderState, action: PayloadAction<any>) => {
       const newOBJ: IOrder = {
@@ -50,6 +81,9 @@ export const {
   addNewOrderInList,
   removeFromOrderList,
   clearOrder,
+  addNewOrderInIListRequested,
+  addNewOrderInListSuccess,
+  addNewOrderInListFailed,
 } = orderSlice.actions;
 
 export const orderReducer = orderSlice.reducer;

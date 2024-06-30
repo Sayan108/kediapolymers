@@ -3,13 +3,16 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {TextInput, Button, Text} from 'react-native-paper';
 import HelperText from '../components/helperText';
 import Layout from '../components/layOut';
-import {useDispatch} from 'react-redux';
-import {clearCart} from '../redux/silces/cart.slice';
+import {useDispatch, useSelector} from 'react-redux';
+import {clearCart, clearCurrentCart} from '../redux/silces/cart.slice';
+import {RootState} from '../redux';
 
 const AddBillingAddress = ({navigation}: {navigation: any}) => {
-  const [appointmentDetails, setAppointmentDetails] = useState<any>({});
+  const [address, setaddress] = useState<any>({});
   const [touchedFields, setTouchedFields] = useState<any>({});
   const dispatch = useDispatch();
+
+  const {currentCart} = useSelector((state: RootState) => state.cart);
 
   const handleNavigation = () => {
     navigation.navigate('cart');
@@ -25,11 +28,11 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
         <TextInput
           maxLength={50}
           autoFocus
-          value={appointmentDetails?.fullname}
+          value={address?.fullname}
           label="Full name"
           mode="outlined"
           onChangeText={(text: string) => {
-            setAppointmentDetails({...appointmentDetails, fullname: text});
+            setaddress({...address, fullname: text});
           }}
           onBlur={() => handleBlur('fullname')}
           style={styles.input}
@@ -40,17 +43,17 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
         <HelperText
           text="This field is required"
           type="error"
-          show={touchedFields.fullname && !appointmentDetails?.fullname}
+          show={touchedFields.fullname && !address?.fullname}
         />
 
         <TextInput
           activeOutlineColor="red"
           maxLength={10}
-          value={appointmentDetails?.patientPhone}
+          value={address?.patientPhone}
           label="Phone"
           mode="outlined"
           onChangeText={(text: string) => {
-            setAppointmentDetails({...appointmentDetails, patientPhone: text});
+            setaddress({...address, patientPhone: text});
           }}
           onBlur={() => handleBlur('patientPhone')}
           style={styles.input}
@@ -61,17 +64,17 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
         <HelperText
           text="This field is required"
           type="error"
-          show={touchedFields.patientPhone && !appointmentDetails?.patientPhone}
+          show={touchedFields.patientPhone && !address?.patientPhone}
         />
 
         <TextInput
           activeOutlineColor="red"
           maxLength={200}
-          value={appointmentDetails?.addressOne}
+          value={address?.addressOne}
           label="Address 1"
           mode="outlined"
           onChangeText={(text: string) => {
-            setAppointmentDetails({...appointmentDetails, addressOne: text});
+            setaddress({...address, addressOne: text});
           }}
           onBlur={() => handleBlur('addressOne')}
           style={styles.input}
@@ -81,17 +84,17 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
         <HelperText
           text="This field is required"
           type="error"
-          show={touchedFields.addressOne && !appointmentDetails?.addressOne}
+          show={touchedFields.addressOne && !address?.addressOne}
         />
 
         <TextInput
           activeOutlineColor="red"
           maxLength={100}
-          value={appointmentDetails?.addressTwo}
+          value={address?.addressTwo}
           label="Address 2"
           mode="outlined"
           onChangeText={(text: string) => {
-            setAppointmentDetails({...appointmentDetails, addressTwo: text});
+            setaddress({...address, addressTwo: text});
           }}
           onBlur={() => handleBlur('addressTwo')}
           style={styles.input}
@@ -102,11 +105,11 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
         <TextInput
           activeOutlineColor="red"
           maxLength={100}
-          value={appointmentDetails?.city}
+          value={address?.city}
           label="City"
           mode="outlined"
           onChangeText={(text: string) => {
-            setAppointmentDetails({...appointmentDetails, city: text});
+            setaddress({...address, city: text});
           }}
           onBlur={() => handleBlur('city')}
           style={styles.input}
@@ -116,17 +119,17 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
         <HelperText
           text="This field is required"
           type="error"
-          show={touchedFields.city && !appointmentDetails?.city}
+          show={touchedFields.city && !address?.city}
         />
 
         <TextInput
           activeOutlineColor="red"
           maxLength={6}
-          value={appointmentDetails?.pinCode}
+          value={address?.pinCode}
           label="PIN code"
           mode="outlined"
           onChangeText={(text: string) => {
-            setAppointmentDetails({...appointmentDetails, pinCode: text});
+            setaddress({...address, pinCode: text});
           }}
           onBlur={() => handleBlur('pinCode')}
           style={styles.input}
@@ -137,17 +140,17 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
         <HelperText
           text="This field is required"
           type="error"
-          show={touchedFields.pinCode && !appointmentDetails?.pinCode}
+          show={touchedFields.pinCode && !address?.pinCode}
         />
 
         <TextInput
           activeOutlineColor="red"
           maxLength={100}
-          value={appointmentDetails?.state}
+          value={address?.state}
           label="State"
           mode="outlined"
           onChangeText={(text: string) => {
-            setAppointmentDetails({...appointmentDetails, state: text});
+            setaddress({...address, state: text});
           }}
           onBlur={() => handleBlur('state')}
           style={styles.input}
@@ -157,14 +160,14 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
         <HelperText
           text="This field is required"
           type="error"
-          show={touchedFields.state && !appointmentDetails?.state}
+          show={touchedFields.state && !address?.state}
         />
 
         <Button
           mode="contained"
           onPress={() => {
             navigation.navigate('billingscreen');
-            dispatch(clearCart());
+            // dispatch(clearCart());
           }}
           style={styles.button}
           labelStyle={styles.buttonLabel}>

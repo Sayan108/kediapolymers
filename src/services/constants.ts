@@ -8,7 +8,8 @@ export const endPoints = {
   logIn: '/user/login',
   categoryList: '/category',
   productList: '/product/productList',
-  createOrder: '',
+  addProduct: '/product',
+  createOrder: '/order',
   orderList: '',
 };
 

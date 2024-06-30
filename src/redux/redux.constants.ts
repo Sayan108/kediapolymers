@@ -69,6 +69,7 @@ export interface ICartState {
 export interface IOrderState {
   orderList: IOrder[];
   currentOrder: IOrder;
+  isLoading: boolean;
 }
 
 export interface category {
@@ -110,6 +111,7 @@ export const cartInitialState: ICartState = {
 };
 
 export const orderInitialState: IOrderState = {
+  isLoading: false,
   orderList: [],
   currentOrder: {
     id: '',

@@ -62,8 +62,8 @@ const LoginScreen: React.FC<{navigation: any}> = ({navigation}) => {
             <Button
               mode="contained"
               onPress={handleLogin}
-              // loading={isLoading}
-              // disabled={isLoading}
+              loading={isLoading}
+              disabled={isLoading}
               style={styles.button}>
               {isLoading ? 'Loading...' : 'Login'}
             </Button>
