@@ -11,6 +11,7 @@ export const endPoints = {
   addProduct: '/product',
   createOrder: '/order',
   orderList: '',
+  userList: 'user/allusersbyroleid',
 };
 
 const env = 'devBaseURL';

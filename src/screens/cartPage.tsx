@@ -46,10 +46,13 @@ const Cartpage = ({navigation, route}: {navigation: any; route: any}) => {
               style={styles.button}
               mode="contained"
               onPress={() => {
-                dispatch(addNewOrderInList(currentCart));
-                dispatch(setCurrentOrder(currentCart));
-                dispatch(removeCartItem(currentCart));
-                dispatch(clearCurrentCart(cartInitialState.currentCart));
+                // dispatch(addNewOrderInList(currentCart));
+                // dispatch(setCurrentOrder(currentCart));
+                // dispatch(removeCartItem(currentCart));
+                // dispatch(clearCurrentCart(cartInitialState.currentCart));
+                dispatch(addNewCartInList(currentCart));
+                // dispatch(setInitialCurrentCart(cartInitialState.currentCart));
+
                 navigation.navigate('billingaddress');
               }}>
               {'Confirm order'}

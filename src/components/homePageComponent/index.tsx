@@ -95,7 +95,7 @@ const HomePageComponent = ({navigation}: {navigation: any}) => {
               top: 60, // Adjust as needed
               left: '10%',
               right: 0,
-              backgroundColor: 'rgba(103, 80, 164, 0.95)',
+              backgroundColor: 'white', // 'rgba(103, 80, 164, 0.95)',
               zIndex: 10, // Ensure the menu is above other elements
               elevation: 400,
               width: '60%',

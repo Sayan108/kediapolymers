@@ -20,3 +20,7 @@ export const createOrder = (payload: any) => {
 export const addProduct = (payload: any) => {
   return baseClient.post(endPoints.addProduct, payload);
 };
+
+export const getAllDealers = (params: any) => {
+  return baseClient.get(endPoints.userList, {params});
+};

@@ -4,6 +4,7 @@ import {activeURL} from './constants';
 import {store} from '../redux';
 const state = store.getState();
 const token = state.auth.userDetails?.accessToken ?? '';
+console.log(token);
 
 const axiosConfig: AxiosRequestConfig = {
   baseURL: activeURL,

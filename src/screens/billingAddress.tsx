@@ -1,17 +1,76 @@
-import React, {useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import {TextInput, Button, Text} from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
+import {
+  TextInput,
+  Button,
+  Text,
+  RadioButton,
+  ActivityIndicator,
+} from 'react-native-paper';
 import HelperText from '../components/helperText';
 import Layout from '../components/layOut';
 import {useDispatch, useSelector} from 'react-redux';
-import {clearCart, clearCurrentCart} from '../redux/silces/cart.slice';
 import {RootState} from '../redux';
+import useApiservices from '../hooks/useApiCalls';
+import {addNewOrderInIListRequested} from '../redux/silces/order.slice';
 
-const AddBillingAddress = ({navigation}: {navigation: any}) => {
-  const [address, setaddress] = useState<any>({});
-  const [touchedFields, setTouchedFields] = useState<any>({});
+interface NavigationProps {
+  navigation: any;
+}
+
+interface Address {
+  customer?: any;
+  fullname?: string;
+  patientPhone?: string;
+  addressOne?: string;
+  addressTwo?: string;
+  city?: string;
+  pinCode?: string;
+  state?: string;
+}
+
+const roleid = '93c9c3fa-edc4-4c28-b79b-c0ac28d916fe';
+
+const AddBillingAddress: React.FC<NavigationProps> = ({navigation}) => {
+  const names = [
+    'Alice Johnson',
+    'Bob Smith',
+    'Charlie Brown',
+    'David Wilson',
+    'Eva Green',
+    'Frank Wright',
+    'Grace Davis',
+    'Hannah Moore',
+    'Ivy Taylor',
+    'Jack White',
+    'Alice Johnson',
+    'Bob Smith',
+    'Charlie Brown',
+    'David Wilson',
+    'Eva Green',
+    'Frank Wright',
+    'Grace Davis',
+    'Hannah Moore',
+    'Ivy Taylor',
+    'Jack White',
+  ];
+
+  const [address, setAddress] = useState<Address>({});
+  const [touchedFields, setTouchedFields] = useState<{[key: string]: boolean}>(
+    {},
+  );
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const dispatch = useDispatch();
 
+  const {userList, loading, fetchUserList} = useApiservices();
   const {currentCart} = useSelector((state: RootState) => state.cart);
 
   const handleNavigation = () => {
@@ -22,9 +81,73 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
     setTouchedFields({...touchedFields, [field]: true});
   };
 
+  const filteredNames = userList.filter(item =>
+    item?.fullname?.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  const handleOrderClick = () => {
+    navigation.navigate('billingscreen');
+    console.log(currentCart);
+    //  dispatch(addNewOrderInIListRequested());
+  };
+
+  useEffect(() => {
+    fetchUserList(roleid);
+  }, []);
+
   return (
     <Layout navigation={handleNavigation} headerText="Add billing address">
+      <Modal
+        transparent={true}
+        visible={showDropDown}
+        onRequestClose={() => setShowDropDown(false)}>
+        <View style={styles.modalContainer}>
+          <TextInput
+            label="Search"
+            value={searchQuery}
+            onChangeText={text => setSearchQuery(text)}
+            mode="outlined"
+            style={styles.searchInput}
+          />
+          <ScrollView>
+            <RadioButton.Group
+              onValueChange={newValue => {
+                setAddress({...address, customer: newValue});
+                setShowDropDown(false);
+              }}
+              value={address?.customer?.fullname ?? 'Select dealer'}>
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
+                <>
+                  {filteredNames.map((item, index) => (
+                    <View key={index} style={styles.dropdownItem}>
+                      <RadioButton value={item} color={'black'} />
+                      <Text style={styles.dropdownItemText}>
+                        {item.fullname}
+                      </Text>
+                    </View>
+                  ))}
+                </>
+              )}
+            </RadioButton.Group>
+          </ScrollView>
+        </View>
+      </Modal>
       <ScrollView>
+        <TouchableOpacity
+          onPress={() => {
+            setShowDropDown(true);
+          }}>
+          <View style={styles.dropdownButton}>
+            <Text>
+              {address?.customer && address?.customer?.fullname !== ''
+                ? address?.customer?.fullname
+                : 'Choose dealer'}
+            </Text>
+          </View>
+        </TouchableOpacity>
+
         <TextInput
           maxLength={50}
           autoFocus
@@ -32,7 +155,7 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
           label="Full name"
           mode="outlined"
           onChangeText={(text: string) => {
-            setaddress({...address, fullname: text});
+            setAddress({...address, fullname: text});
           }}
           onBlur={() => handleBlur('fullname')}
           style={styles.input}
@@ -53,7 +176,7 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
           label="Phone"
           mode="outlined"
           onChangeText={(text: string) => {
-            setaddress({...address, patientPhone: text});
+            setAddress({...address, patientPhone: text});
           }}
           onBlur={() => handleBlur('patientPhone')}
           style={styles.input}
@@ -74,7 +197,7 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
           label="Address 1"
           mode="outlined"
           onChangeText={(text: string) => {
-            setaddress({...address, addressOne: text});
+            setAddress({...address, addressOne: text});
           }}
           onBlur={() => handleBlur('addressOne')}
           style={styles.input}
@@ -94,7 +217,7 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
           label="Address 2"
           mode="outlined"
           onChangeText={(text: string) => {
-            setaddress({...address, addressTwo: text});
+            setAddress({...address, addressTwo: text});
           }}
           onBlur={() => handleBlur('addressTwo')}
           style={styles.input}
@@ -109,7 +232,7 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
           label="City"
           mode="outlined"
           onChangeText={(text: string) => {
-            setaddress({...address, city: text});
+            setAddress({...address, city: text});
           }}
           onBlur={() => handleBlur('city')}
           style={styles.input}
@@ -129,7 +252,7 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
           label="PIN code"
           mode="outlined"
           onChangeText={(text: string) => {
-            setaddress({...address, pinCode: text});
+            setAddress({...address, pinCode: text});
           }}
           onBlur={() => handleBlur('pinCode')}
           style={styles.input}
@@ -150,7 +273,7 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
           label="State"
           mode="outlined"
           onChangeText={(text: string) => {
-            setaddress({...address, state: text});
+            setAddress({...address, state: text});
           }}
           onBlur={() => handleBlur('state')}
           style={styles.input}
@@ -165,13 +288,10 @@ const AddBillingAddress = ({navigation}: {navigation: any}) => {
 
         <Button
           mode="contained"
-          onPress={() => {
-            navigation.navigate('billingscreen');
-            // dispatch(clearCart());
-          }}
+          onPress={handleOrderClick}
           style={styles.button}
           labelStyle={styles.buttonLabel}>
-          Next
+          Add order
         </Button>
       </ScrollView>
     </Layout>
@@ -191,6 +311,44 @@ const styles = StyleSheet.create({
   buttonLabel: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  dropdownItemText: {
+    marginLeft: 8,
+    color: 'black',
+  },
+  modalContainer: {
+    alignSelf: 'center',
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    maxHeight: '80%',
+    borderWidth: 1,
+    borderColor: 'black',
+    zIndex: 10000,
+    marginTop: 50,
+  },
+  searchInput: {
+    marginBottom: 10,
+  },
+  dropdownButton: {
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 5,
+    height: 50,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
   },
 });
 
