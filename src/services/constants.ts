@@ -10,7 +10,8 @@ export const endPoints = {
   productList: '/product/productList',
   addProduct: '/product',
   createOrder: '/order',
-  orderList: '',
+  orderList: '/order/list',
+  orderDetails: '/order/details',
   userList: 'user/allusersbyroleid',
 };
 

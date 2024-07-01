@@ -1,6 +1,7 @@
 import {type PayloadAction, createSlice} from '@reduxjs/toolkit';
 import {orderInitialState, IOrderState, IOrder} from '../redux.constants';
 import {act} from 'react';
+import {RootState} from '..';
 
 // Redux Toolkit slice
 export const orderSlice = createSlice({
@@ -65,6 +66,30 @@ export const orderSlice = createSlice({
         ...orderInitialState,
       };
     },
+    getOrdersListRequested: (state: IOrderState) => {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    },
+
+    getOrderListSuccess: (
+      state: IOrderState,
+      action: PayloadAction<IOrder[]>,
+    ) => {
+      return {
+        ...state,
+        isLoading: false,
+        orderList: action.payload,
+      };
+    },
+    getOrderListFailed: (state: IOrderState, action: PayloadAction<any>) => {
+      return {
+        ...state,
+        isLoading: false,
+        errormessege: action.payload,
+      };
+    },
 
     removeFromOrderList: (state: IOrderState, action: PayloadAction<any>) => {
       return {
@@ -84,6 +109,9 @@ export const {
   addNewOrderInIListRequested,
   addNewOrderInListSuccess,
   addNewOrderInListFailed,
+  getOrdersListRequested,
+  getOrderListSuccess,
+  getOrderListFailed,
 } = orderSlice.actions;
 
 export const orderReducer = orderSlice.reducer;

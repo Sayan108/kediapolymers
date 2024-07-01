@@ -1,10 +1,13 @@
 import {View, Text, ScrollView} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import Layout from '../components/layOut';
 import OrderList from '../components/orderListComponent';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../redux';
-import {setCurrentOrder} from '../redux/silces/order.slice';
+import {
+  getOrdersListRequested,
+  setCurrentOrder,
+} from '../redux/silces/order.slice';
 
 const Orderscreen = ({
   navigation,
@@ -19,6 +22,11 @@ const Orderscreen = ({
     dispatch(setCurrentOrder(item));
     navigation.navigate('billingscreen', {id: item.id});
   };
+
+  useEffect(() => {
+    dispatch(getOrdersListRequested());
+  }, []);
+
   return (
     <Layout
       headerText="Orders"

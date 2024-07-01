@@ -24,3 +24,11 @@ export const addProduct = (payload: any) => {
 export const getAllDealers = (params: any) => {
   return baseClient.get(endPoints.userList, {params});
 };
+
+export const getOrderList = (params?: any) => {
+  return baseClient.get(endPoints.orderList, {params});
+};
+
+export const getOrderDetails = (params: any) => {
+  return baseClient.get(endPoints.orderDetails, {params});
+};

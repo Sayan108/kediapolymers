@@ -26,7 +26,6 @@ interface NavigationProps {
 }
 
 interface Address {
-  customer?: any;
   fullname?: string;
   patientPhone?: string;
   addressOne?: string;
@@ -39,30 +38,8 @@ interface Address {
 const roleid = '93c9c3fa-edc4-4c28-b79b-c0ac28d916fe';
 
 const AddBillingAddress: React.FC<NavigationProps> = ({navigation}) => {
-  const names = [
-    'Alice Johnson',
-    'Bob Smith',
-    'Charlie Brown',
-    'David Wilson',
-    'Eva Green',
-    'Frank Wright',
-    'Grace Davis',
-    'Hannah Moore',
-    'Ivy Taylor',
-    'Jack White',
-    'Alice Johnson',
-    'Bob Smith',
-    'Charlie Brown',
-    'David Wilson',
-    'Eva Green',
-    'Frank Wright',
-    'Grace Davis',
-    'Hannah Moore',
-    'Ivy Taylor',
-    'Jack White',
-  ];
-
   const [address, setAddress] = useState<Address>({});
+  const [dealer, setdealer] = useState<any>(null);
   const [touchedFields, setTouchedFields] = useState<{[key: string]: boolean}>(
     {},
   );
@@ -88,7 +65,22 @@ const AddBillingAddress: React.FC<NavigationProps> = ({navigation}) => {
   const handleOrderClick = () => {
     navigation.navigate('billingscreen');
     console.log(currentCart);
-    //  dispatch(addNewOrderInIListRequested());
+    const orderItems = currentCart?.items?.map((item, index) => ({
+      productId: item?.id,
+      qty: item?.count,
+      totalPrice: parseFloat(item?.totalPrice),
+      productName: item?.productName,
+    }));
+
+    const orderPayLoad = {
+      customerId: dealer?.userId,
+      totalPrice: parseFloat(currentCart.totalAmount),
+      billingAddress: JSON.stringify(address),
+      orderItems,
+    };
+    console.log(JSON.stringify(orderPayLoad));
+
+    dispatch(addNewOrderInIListRequested(orderPayLoad));
   };
 
   useEffect(() => {
@@ -112,10 +104,10 @@ const AddBillingAddress: React.FC<NavigationProps> = ({navigation}) => {
           <ScrollView>
             <RadioButton.Group
               onValueChange={newValue => {
-                setAddress({...address, customer: newValue});
+                setdealer(newValue);
                 setShowDropDown(false);
               }}
-              value={address?.customer?.fullname ?? 'Select dealer'}>
+              value={dealer?.fullname ?? 'Select dealer'}>
               {loading ? (
                 <ActivityIndicator />
               ) : (
@@ -141,8 +133,8 @@ const AddBillingAddress: React.FC<NavigationProps> = ({navigation}) => {
           }}>
           <View style={styles.dropdownButton}>
             <Text>
-              {address?.customer && address?.customer?.fullname !== ''
-                ? address?.customer?.fullname
+              {dealer && dealer?.fullname !== ''
+                ? dealer?.fullname
                 : 'Choose dealer'}
             </Text>
           </View>

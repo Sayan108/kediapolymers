@@ -4,7 +4,7 @@ import {
   watchFetchCategoryList,
   watchFetchProductList,
 } from './product.saga';
-import {watchAddNewOrder} from './order.saga';
+import {watchAddNewOrder, watchGetOrderList} from './order.saga';
 
 export default function* rootSaga() {
   yield all([
@@ -12,5 +12,6 @@ export default function* rootSaga() {
     watchFetchProductList(),
     watchAddNewOrder(),
     watchAddProduct(),
+    watchGetOrderList(),
   ]);
 }

@@ -12,21 +12,16 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {ICartItem} from '../redux/redux.constants';
-import {
-  Category,
-  LargeCategoryName,
-  UppercaseLargeCategoryName,
-  genetateUUID,
-  getCategoryEnumValueByString,
-} from '../redux/utils';
+import {UppercaseLargeCategoryName} from '../redux/utils';
 import {RootState} from '../redux';
-import {updateCartInList, updateCurrentCart} from '../redux/silces/cart.slice';
+import {updateCurrentCart} from '../redux/silces/cart.slice';
 import {toPascalCase} from '../products.config';
 
 const AddToCartCard = (props: any) => {
   const dropdown = ['10 cm', '20 cm', '30 cm', '40 cm', '50 cm'];
   const {item, setSelectedItem} = props;
   const [cartItem, setCartItem] = useState({
+    id: item?.productId,
     count: parseInt(item?.quantity ?? 1),
     selectedItem: '',
     productName: '',
@@ -47,13 +42,16 @@ const AddToCartCard = (props: any) => {
   };
 
   const handleAddToCartClick = () => {
+    console.log(item, 'gettinng item');
     const newCartItem: ICartItem = {
-      id: genetateUUID(),
+      id: cartItem?.id,
       productName: cartItem.productName,
       productPrice: item?.unitPrice.toString(),
       totalPrice: cartItem.totalAmount.toString(),
       count: cartItem.count,
     };
+
+    console.log(newCartItem, 'nnnew cart item');
     dispatch(updateCurrentCart(newCartItem));
 
     setSelectedItem(null);
